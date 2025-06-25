@@ -523,7 +523,6 @@
               Meta de <strong>PONTOS</strong>: +3 <strong>ENERGIA</strong> +
               Bônus por energia restante!
             </li>
-            <!-- REGRA ATUALIZADA -->
           </ul>
         </div>
         <div id="hand-controls">
@@ -563,6 +562,7 @@
         const SWAP_COST = 1;
         const MIN_VOWELS_IN_HAND = 3;
         const MAX_REFILL_ATTEMPTS = 30;
+        const MIN_POSSIBLE_WORDS_FROM_HAND = 2; // NOVA CONSTANTE
 
         const VOWELS = ["A", "E", "I", "O", "U"];
 
@@ -975,18 +975,23 @@
           return true;
         }
 
-        function canFormAnyDictionaryWord(handTilesArray, dict) {
-          if (!handTilesArray || handTilesArray.length === 0) return false;
-          const handLetters = handTilesArray.map((tile) => tile.letter);
+        // MODIFICADA/RENOMEADA
+        function countPossibleDictionaryWords(handTilesArray, dict) {
+          if (!handTilesArray || handTilesArray.length === 0) return 0;
+          const handLetters = handTilesArray
+            .map((tile) => (tile ? tile.letter : ""))
+            .filter(Boolean);
+          let count = 0;
           for (const word of dict) {
             if (
+              word.length > 0 &&
               word.length <= handLetters.length &&
               canFormWord(word, handLetters)
             ) {
-              return true;
+              count++;
             }
           }
-          return false;
+          return count;
         }
 
         function refillHand() {
@@ -1009,16 +1014,17 @@
 
             const hasEnoughVowels =
               countVowelsInHand(currentAttemptHandTiles) >= MIN_VOWELS_IN_HAND;
-            const canFormWordFromDict = canFormAnyDictionaryWord(
+            const possibleWordsCount = countPossibleDictionaryWords(
               currentAttemptHandTiles,
               dictionary
-            );
+            ); // USA A NOVA FUNÇÃO
 
             if (
               currentAttemptHandTiles.length === NUM_HAND_SLOTS &&
               hasEnoughVowels &&
-              canFormWordFromDict
+              possibleWordsCount >= MIN_POSSIBLE_WORDS_FROM_HAND
             ) {
+              // CONDIÇÃO ATUALIZADA
               playerHand = currentAttemptHandTiles;
               letterBag = tempLetterBag;
               renderHand();
@@ -1026,9 +1032,11 @@
             }
           }
 
+          // ATUALIZA O AVISO NO CONSOLE
           console.warn(
-            `Não foi possível gerar mão com ${MIN_VOWELS_IN_HAND} vogais E palavra formável. Preenchendo da melhor forma possível.`
+            `Não foi possível gerar mão com ${MIN_VOWELS_IN_HAND} vogais E ao menos ${MIN_POSSIBLE_WORDS_FROM_HAND} palavras formáveis. Preenchendo da melhor forma possível.`
           );
+
           playerHand = existingHandTiles;
           const neededFinally = NUM_HAND_SLOTS - playerHand.length;
           if (neededFinally > 0) {
@@ -1129,13 +1137,13 @@
           if (isValidWord(word)) {
             const scoreFromWord = currentWordPoints * (1 + currentWordMultis);
             totalScore += scoreFromWord;
-            currentEnergy -= 1; // Custo da palavra
+            currentEnergy -= 1;
 
-            let energyBeforeMetaProcessing = currentEnergy; // Energia restante APÓS pagar o custo da palavra
+            let energyBeforeMetaProcessing = currentEnergy;
 
             if (totalScore >= targetScore) {
               const fixedBonus = 3;
-              const remainderBonus = Math.max(0, energyBeforeMetaProcessing); // Bônus é a energia que sobrou (não pode ser negativo)
+              const remainderBonus = Math.max(0, energyBeforeMetaProcessing);
 
               currentEnergy += fixedBonus + remainderBonus;
 
@@ -1150,7 +1158,7 @@
 
             boardState.fill(null);
             refillHand();
-            checkGameOver(); // Verifica se a energia não ficou negativa ou zerada mesmo com bônus
+            checkGameOver();
           } else {
             showMessage(`"${word}" não é válida!`, 2000);
           }
@@ -1196,7 +1204,7 @@
             gameOverPopup.classList.remove("hidden");
             showMessage("Fim de Jogo!", 3000);
           }
-          renderStats(); // Sempre atualiza stats, mesmo que não seja game over
+          renderStats();
         }
 
         function initializeGame() {
