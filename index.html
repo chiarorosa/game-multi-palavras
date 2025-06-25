@@ -3,39 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jogo de Palavras - Muerte Mexicana</title>
+    <title>MultiLetra Mix (MLM)</title>
+    <!-- NOME DO JOGO ATUALIZADO -->
     <style>
       body {
         font-family: "Arial", sans-serif;
-        background-color: #1e002d; /* Roxo bem escuro, quase preto */
+        background-color: #1e002d;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         margin: 0;
-        color: #f8f8f8; /* Texto padrão claro para contraste com fundo escuro */
+        color: #f8f8f8;
         overflow-x: hidden;
       }
 
       #game-container {
         width: 95%;
         max-width: 900px;
-        min-height: 600px;
-        background: #2c0b3f; /* Roxo escuro para o container */
+        min-height: 650px; /* Aumentado um pouco para o título */
+        background: #2c0b3f;
         border-radius: 20px;
         box-shadow: 0 0 30px rgba(255, 0, 153, 0.5),
-          0 0 15px rgba(0, 188, 212, 0.5); /* Sombra neon */
+          0 0 15px rgba(0, 188, 212, 0.5);
         padding: 20px;
         display: grid;
         grid-template-areas:
+          "game-title game-title game-title" /* NOVA ÁREA PARA O TÍTULO */
           "top-area top-area top-area"
           "left-sidebar middle-area middle-area"
           "left-sidebar bottom-area bottom-area";
         grid-template-columns: 150px 1fr;
-        grid-template-rows: auto 1fr auto;
+        grid-template-rows: auto auto 1fr auto; /* Ajustado para nova linha */
         gap: 15px;
         position: relative;
-        border: 2px solid #ff0099; /* Borda rosa choque */
+        border: 2px solid #ff0099;
+      }
+
+      /* --- TÍTULO DO JOGO --- */
+      #game-title-area {
+        grid-area: game-title;
+        text-align: center;
+        padding: 10px 0 5px 0; /* Espaçamento */
+        margin-bottom: 5px; /* Espaço antes dos painéis */
+      }
+      #game-title-area h1 {
+        font-size: 2.2em;
+        font-weight: bold;
+        color: #ffc107; /* Amarelo Dourado */
+        margin: 0;
+        text-shadow: 2px 2px 0px #ff0099,
+          /* Sombra Rosa */ -2px -2px 0px #00bcd4; /* Sombra Turquesa */
+        letter-spacing: 1px;
+      }
+      #game-title-area .subtitle {
+        font-size: 1em;
+        color: #f0c5ff; /* Lavanda claro */
+        margin-top: -5px;
       }
 
       /* --- ÁREA SUPERIOR --- */
@@ -45,7 +69,7 @@
         justify-content: space-around;
         align-items: center;
         padding: 10px;
-        background-color: rgba(0, 0, 0, 0.2); /* Fundo sutilmente escuro */
+        background-color: rgba(0, 0, 0, 0.2);
         border-radius: 15px;
         margin-bottom: 10px;
       }
@@ -70,19 +94,19 @@
       }
 
       #points-panel {
-        background-color: #ff0099; /* Rosa Choque */
+        background-color: #ff0099;
         color: #ffffff;
       }
       #multis-panel {
-        background-color: #ff6f00; /* Laranja Vibrante */
+        background-color: #ff6f00;
         color: #ffffff;
       }
       #score-panel {
-        background-color: #ffc107; /* Amarelo Dourado */
-        color: #1e002d; /* Texto escuro para contraste com amarelo */
+        background-color: #ffc107;
+        color: #1e002d;
       }
       #energy-panel {
-        background-color: #00bcd4; /* Turquesa */
+        background-color: #00bcd4;
         color: #ffffff;
         display: flex;
         flex-direction: column;
@@ -109,7 +133,7 @@
       }
       #score-panel .score-target {
         font-size: 0.7em;
-        color: #4a0f5c; /* Roxo escuro no amarelo */
+        color: #4a0f5c;
       }
 
       /* --- ÁREA LATERAL ESQUERDA --- */
@@ -125,11 +149,11 @@
         padding: 10px;
         width: 100px;
         border-radius: 8px;
-        border: 1px solid #76ff03; /* Borda verde limão */
+        border: 1px solid #76ff03;
         cursor: pointer;
         font-size: 1em;
-        background-color: #2c0b3f; /* Fundo roxo escuro */
-        color: #76ff03; /* Texto verde limão */
+        background-color: #2c0b3f;
+        color: #76ff03;
         box-shadow: 0 0 8px rgba(118, 255, 3, 0.5);
         transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
         font-weight: bold;
@@ -149,11 +173,11 @@
       }
       #swap-letters-button span {
         font-weight: bold;
-        color: #ffeb3b; /* Destaque amarelo para custo */
+        color: #ffeb3b;
       }
       #menu-button {
         font-size: 1.5em;
-        border-color: #00bcd4; /* Turquesa */
+        border-color: #00bcd4;
         color: #00bcd4;
       }
       #menu-button:hover:not(:disabled) {
@@ -175,7 +199,7 @@
       #board {
         display: flex;
         gap: 5px;
-        background-color: #1a0823; /* Roxo ainda mais escuro para o tabuleiro */
+        background-color: #1a0823;
         padding: 10px;
         border-radius: 10px;
         border: 1px solid #ff0099;
@@ -184,8 +208,8 @@
       .board-slot {
         width: 50px;
         height: 50px;
-        background-color: #f8f0f0; /* Base clara para os slots (papel) */
-        border: 2px dashed #ff6f00; /* Borda tracejada laranja */
+        background-color: #f8f0f0;
+        border: 2px dashed #ff6f00;
         border-radius: 5px;
         display: flex;
         justify-content: center;
@@ -193,12 +217,12 @@
         font-size: 1.5em;
         font-weight: bold;
         position: relative;
-        color: #1e002d; /* Texto escuro no slot */
+        color: #1e002d;
         transition: background-color 0.2s, border-color 0.2s;
       }
       .board-slot.has-letter {
         border-style: solid;
-        border-color: #ff0099; /* Borda rosa quando tem letra */
+        border-color: #ff0099;
         background-color: #fff8f8;
       }
 
@@ -206,25 +230,28 @@
         position: absolute;
         bottom: 2px;
         right: 2px;
-        width: 10px; /* Pips maiores */
+        width: 10px;
         height: 10px;
         border-radius: 50%;
-        border: 1px solid #1e002d; /* Contorno escuro no pip */
+        border: 1px solid #1e002d;
       }
       .bonus-pip.point {
         background-color: #00bcd4;
-      } /* Turquesa */
+      }
       .bonus-pip.multi {
         background-color: #ff6f00;
-      } /* Laranja */
+      }
 
       #play-button {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        background-color: #ff0099; /* Rosa choque */
+        width: auto;
+        min-width: 100px; /* Ajustado */
+        height: 65px; /* Ajustado */
+        border-radius: 15px;
+        background-color: #ff0099;
         color: white;
-        font-size: 2.5em;
+        font-size: 1.6em; /* Ajustado */
+        font-weight: bold;
+        padding: 0 20px; /* Ajustado */
         border: 2px solid white;
         cursor: pointer;
         box-shadow: 0 0 15px rgba(255, 0, 153, 0.7);
@@ -232,13 +259,19 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        line-height: 1;
+      }
+      #play-button .play-button-highlight {
+        color: #ffeb3b;
+        margin-left: 3px; /* Ajustado */
+        font-style: italic;
       }
       #play-button:hover:not(:disabled) {
         background-color: #e00080;
         box-shadow: 0 0 20px rgba(255, 0, 153, 1);
       }
       #play-button:active:not(:disabled) {
-        transform: scale(0.95);
+        transform: scale(0.97);
       }
       #play-button:disabled {
         background-color: #7c004c;
@@ -254,7 +287,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 10px 0; /* Ajustado padding */
+        padding: 10px 0;
         gap: 10px;
       }
 
@@ -294,9 +327,9 @@
       #hand-controls button {
         padding: 8px 12px;
         border-radius: 5px;
-        border: 1px solid #ffc107; /* Borda Amarela */
-        background-color: #2c0b3f; /* Fundo Roxo Escuro */
-        color: #ffc107; /* Texto Amarelo */
+        border: 1px solid #ffc107;
+        background-color: #2c0b3f;
+        color: #ffc107;
         cursor: pointer;
         font-size: 0.9em;
         box-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
@@ -317,20 +350,20 @@
         display: flex;
         gap: 5px;
         padding: 10px;
-        background-color: #1a0823; /* Fundo da mão - Roxo bem escuro */
+        background-color: #1a0823;
         border-radius: 10px;
         min-height: 70px;
         flex-wrap: wrap;
         justify-content: center;
         transition: background-color 0.2s;
-        border: 1px solid #76ff03; /* Borda verde limão */
+        border: 1px solid #76ff03;
       }
 
       .letter-tile {
         width: 45px;
         height: 45px;
-        background-color: #fefae0; /* Fundo osso/creme bem claro */
-        border: 2px solid #00bcd4; /* Borda Turquesa */
+        background-color: #fefae0;
+        border: 2px solid #00bcd4;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
@@ -338,7 +371,7 @@
         align-items: center;
         font-size: 1.6em;
         font-weight: bold;
-        color: #1e002d; /* Letra roxo escuro */
+        color: #1e002d;
         cursor: grab;
         user-select: none;
         box-shadow: 0 0 5px rgba(0, 188, 212, 0.5);
@@ -359,7 +392,7 @@
         position: absolute;
         bottom: 2px;
         right: 4px;
-        color: #ff6f00; /* Valor da letra laranja */
+        color: #ff6f00;
       }
 
       /* --- POPUP FIM DE JOGO --- */
@@ -368,13 +401,13 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: #210733; /* Fundo roxo escuro para popup */
+        background-color: #210733;
         padding: 30px;
         border-radius: 15px;
         box-shadow: 0 0 25px rgba(255, 0, 153, 0.6);
         text-align: center;
         z-index: 100;
-        border: 2px solid #ffc107; /* Borda amarela */
+        border: 2px solid #ffc107;
         color: #f8f8f8;
       }
       .popup.hidden {
@@ -382,7 +415,7 @@
       }
       .popup h2 {
         margin-top: 0;
-        color: #ff0099; /* Título Rosa */
+        color: #ff0099;
         font-size: 2em;
       }
       .popup p {
@@ -391,11 +424,11 @@
       }
       .popup strong {
         color: #ffeb3b;
-      } /* Pontuação final em amarelo brilhante */
+      }
       .popup button {
         padding: 12px 25px;
-        background-color: #76ff03; /* Botão verde limão */
-        color: #1e002d; /* Texto escuro */
+        background-color: #76ff03;
+        color: #1e002d;
         border: none;
         border-radius: 8px;
         font-size: 1.1em;
@@ -412,7 +445,7 @@
 
       .drag-over {
         background-color: #4a2b5e !important;
-        border-color: #76ff03 !important; /* Verde Limão para drag over */
+        border-color: #76ff03 !important;
         box-shadow: inset 0 0 10px rgba(118, 255, 3, 0.5);
       }
 
@@ -421,18 +454,18 @@
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: rgba(255, 0, 153, 0.9); /* Rosa choque mais opaco */
-        color: #ffffff; /* Texto branco puro para contraste */
-        padding: 12px 25px; /* Mais padding */
-        border-radius: 10px; /* Bordas mais arredondadas */
-        font-size: 1.1em; /* Fonte maior */
-        z-index: 1100; /* Garantir que está bem na frente */
+        background-color: rgba(255, 0, 153, 0.9);
+        color: #ffffff;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-size: 1.1em;
+        z-index: 1100;
         opacity: 0;
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         pointer-events: none;
-        border: 2px solid #ffffff; /* Borda branca */
+        border: 2px solid #ffffff;
         font-weight: bold;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra no texto */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
       }
       #message-area.visible {
         opacity: 1;
@@ -442,6 +475,11 @@
   </head>
   <body>
     <div id="game-container">
+      <div id="game-title-area">
+        <!-- TÍTULO DO JOGO ADICIONADO -->
+        <h1>MultiLetra Mix</h1>
+        <div class="subtitle">(MLM)</div>
+      </div>
       <div id="top-area">
         <div id="points-panel" class="info-panel">
           <div class="title">Pontos</div>
@@ -476,7 +514,10 @@
 
       <div id="middle-area">
         <div id="board"></div>
-        <button id="play-button" title="Validar Palavra">▶</button>
+        <button id="play-button" title="Validar Palavra">
+          <!-- BOTÃO ATUALIZADO -->
+          Valid<span class="play-button-highlight">AR</span>
+        </button>
       </div>
 
       <div id="bottom-area">
@@ -525,6 +566,8 @@
     </div>
 
     <script>
+      // O JAVASCRIPT PERMANECE O MESMO DA VERSÃO ANTERIOR
+      // (com as adições para score-target-value e a lógica de targetScore já implementadas)
       document.addEventListener("DOMContentLoaded", () => {
         const NUM_BOARD_SLOTS = 10;
         const NUM_HAND_SLOTS = 10;
@@ -915,7 +958,7 @@
           totalScoreElement.textContent = totalScore;
           currentEnergyElement.textContent = currentEnergy;
           if (scoreTargetValueElement)
-            scoreTargetValueElement.textContent = targetScore; // Atualiza aqui também
+            scoreTargetValueElement.textContent = targetScore;
 
           const isBoardEmpty = boardState.every((s) => s === null);
           playButton.disabled = !gameActive || isBoardEmpty;
@@ -1103,7 +1146,6 @@
             if (totalScore >= targetScore) {
               currentEnergy += 3;
               targetScore += 60;
-              // scoreTargetValueElement.textContent = targetScore; // Já é atualizado em renderStats
               showMessage(
                 `META ATINGIDA! +3 ENERGIA! Próxima meta: ${targetScore} pts`,
                 3500
@@ -1118,7 +1160,7 @@
           } else {
             showMessage(`"${word}" não é válida!`, 2000);
           }
-          renderBoard(); // Isso chama calculateAndUpdateWordScore que chama renderStats
+          renderBoard();
         }
 
         function handleSwapLetters() {
@@ -1140,9 +1182,9 @@
           shuffleArray(letterBag);
           playerHand = [];
           refillHand();
-          showMessage("Letras trocadas!", 1500); // Movido para depois de refillHand
-          checkGameOver(); // Movido para depois de refillHand e showMessage
-          renderStats(); // Para atualizar o estado da energia imediatamente
+          showMessage("Letras trocadas!", 1500);
+          checkGameOver();
+          renderStats();
         }
 
         function sortHandAlpha() {
@@ -1170,7 +1212,6 @@
           currentWordPoints = 0;
           currentWordMultis = 0;
           targetScore = 60;
-          // scoreTargetValueElement.textContent = targetScore; // Será chamado por renderStats
 
           createLetterBag();
           playerHand = [];
@@ -1178,7 +1219,7 @@
           refillHand();
           gameOverPopup.classList.add("hidden");
           document.getElementById("swap-cost").textContent = `${SWAP_COST}⚡`;
-          renderBoard(); // Isso chama calculateAndUpdateWordScore que chama renderStats
+          renderBoard();
         }
 
         function handleDragStartHandLetter(event) {
