@@ -3,17 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jogo de Palavras Conceitual</title>
+    <title>Jogo de Palavras - Muerte Mexicana</title>
     <style>
       body {
         font-family: "Arial", sans-serif;
-        background-color: #f5e6c8; /* Tom areia/pergaminho claro */
+        background-color: #1e002d; /* Roxo bem escuro, quase preto */
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         margin: 0;
-        color: #4a3b31; /* Marrom escuro para texto padrão */
+        color: #f8f8f8; /* Texto padrão claro para contraste com fundo escuro */
         overflow-x: hidden;
       }
 
@@ -21,9 +21,10 @@
         width: 95%;
         max-width: 900px;
         min-height: 600px;
-        background: #d2b48c; /* Marrom claro / Tan para o container principal */
+        background: #2c0b3f; /* Roxo escuro para o container */
         border-radius: 20px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Sombra mais pronunciada */
+        box-shadow: 0 0 30px rgba(255, 0, 153, 0.5),
+          0 0 15px rgba(0, 188, 212, 0.5); /* Sombra neon */
         padding: 20px;
         display: grid;
         grid-template-areas:
@@ -34,7 +35,7 @@
         grid-template-rows: auto 1fr auto;
         gap: 15px;
         position: relative;
-        border: 3px solid #7a5c58; /* Borda marrom escura para dar um toque rústico */
+        border: 2px solid #ff0099; /* Borda rosa choque */
       }
 
       /* --- ÁREA SUPERIOR --- */
@@ -44,12 +45,7 @@
         justify-content: space-around;
         align-items: center;
         padding: 10px;
-        background-color: rgba(
-          94,
-          75,
-          63,
-          0.2
-        ); /* Fundo sutilmente mais escuro e temático */
+        background-color: rgba(0, 0, 0, 0.2); /* Fundo sutilmente escuro */
         border-radius: 15px;
         margin-bottom: 10px;
       }
@@ -57,14 +53,16 @@
       .info-panel {
         padding: 10px 15px;
         border-radius: 10px;
-        /* color: white; Default removido, será específico por painel */
         text-align: center;
-        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4),
+          0 0 5px rgba(255, 255, 255, 0.2);
         min-width: 80px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
       }
       .info-panel .title {
         font-size: 0.8em;
         margin-bottom: 5px;
+        font-weight: bold;
       }
       .info-panel .value {
         font-size: 1.8em;
@@ -72,20 +70,20 @@
       }
 
       #points-panel {
-        background-color: #2e7d32; /* Verde floresta */
-        color: #f0f0f0;
+        background-color: #ff0099; /* Rosa Choque */
+        color: #ffffff;
       }
       #multis-panel {
-        background-color: #d84315; /* Laranja queimado */
-        color: #f0f0f0;
+        background-color: #ff6f00; /* Laranja Vibrante */
+        color: #ffffff;
       }
       #score-panel {
-        background-color: #6d4c41; /* Marrom médio */
-        color: #f0f0f0;
+        background-color: #ffc107; /* Amarelo Dourado */
+        color: #1e002d; /* Texto escuro para contraste com amarelo */
       }
       #energy-panel {
-        background-color: #c62828; /* Vermelho mais intenso (lava/perigo) */
-        color: #f0f0f0;
+        background-color: #00bcd4; /* Turquesa */
+        color: #ffffff;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -97,12 +95,12 @@
       #energy-panel .icon {
         font-size: 1em;
         color: #ffeb3b;
-      } /* Raio amarelo */
+      }
 
       #top-area > span.multiplier-symbol {
         font-size: 2em;
         font-weight: bold;
-        color: #4e342e; /* Marrom escuro */
+        color: #f8f8f8;
         margin: 0 5px;
       }
 
@@ -111,7 +109,7 @@
       }
       #score-panel .score-target {
         font-size: 0.7em;
-        color: rgba(240, 240, 240, 0.8); /* Ajustado para fundo escuro */
+        color: #4a0f5c; /* Roxo escuro no amarelo */
       }
 
       /* --- ÁREA LATERAL ESQUERDA --- */
@@ -127,29 +125,40 @@
         padding: 10px;
         width: 100px;
         border-radius: 8px;
-        border: none;
+        border: 1px solid #76ff03; /* Borda verde limão */
         cursor: pointer;
         font-size: 1em;
-        background-color: #5d4037; /* Marrom para botões da sidebar */
-        color: #f5e6c8; /* Texto claro */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.2s;
+        background-color: #2c0b3f; /* Fundo roxo escuro */
+        color: #76ff03; /* Texto verde limão */
+        box-shadow: 0 0 8px rgba(118, 255, 3, 0.5);
+        transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+        font-weight: bold;
       }
       #left-sidebar button:hover:not(:disabled) {
-        background-color: #795548;
+        background-color: #76ff03;
+        color: #1e002d;
+        box-shadow: 0 0 12px rgba(118, 255, 3, 0.8);
       }
       #left-sidebar button:disabled {
-        background-color: #a1887f; /* Tom marrom mais claro para desabilitado */
+        background-color: #4a2b5e;
+        color: #6c4b7e;
+        border-color: #6c4b7e;
+        box-shadow: none;
         cursor: not-allowed;
         opacity: 0.7;
       }
       #swap-letters-button span {
         font-weight: bold;
-        color: #ffb300; /* Destaque amarelo/laranja para custo de energia */
+        color: #ffeb3b; /* Destaque amarelo para custo */
       }
       #menu-button {
         font-size: 1.5em;
-        background-color: #a1887f; /* Tom marrom mais claro */
+        border-color: #00bcd4; /* Turquesa */
+        color: #00bcd4;
+      }
+      #menu-button:hover:not(:disabled) {
+        background-color: #00bcd4;
+        color: #1e002d;
       }
 
       /* --- ÁREA CENTRAL --- */
@@ -166,16 +175,17 @@
       #board {
         display: flex;
         gap: 5px;
-        background-color: #a1887f; /* Fundo do tabuleiro - marrom claro / pedra */
+        background-color: #1a0823; /* Roxo ainda mais escuro para o tabuleiro */
         padding: 10px;
         border-radius: 10px;
+        border: 1px solid #ff0099;
       }
 
       .board-slot {
         width: 50px;
         height: 50px;
-        background-color: #d7ccc8; /* Cinza claro / Pedra para os slots */
-        border: 2px dashed #8d6e63; /* Borda tracejada marrom */
+        background-color: #f8f0f0; /* Base clara para os slots (papel) */
+        border: 2px dashed #ff6f00; /* Borda tracejada laranja */
         border-radius: 5px;
         display: flex;
         justify-content: center;
@@ -183,56 +193,57 @@
         font-size: 1.5em;
         font-weight: bold;
         position: relative;
-        color: #3e2723; /* Texto dentro do slot */
+        color: #1e002d; /* Texto escuro no slot */
         transition: background-color 0.2s, border-color 0.2s;
       }
       .board-slot.has-letter {
         border-style: solid;
-        border-color: #5d4037; /* Marrom escuro para borda de letra no slot */
-        background-color: #efebe9; /* Fundo do slot com letra - pedra mais clara */
-      }
-      .board-slot.has-letter .letter-char {
-        pointer-events: none;
-      }
-      .board-slot.has-letter .value {
-        pointer-events: none;
+        border-color: #ff0099; /* Borda rosa quando tem letra */
+        background-color: #fff8f8;
       }
 
       .board-slot .bonus-pip {
         position: absolute;
         bottom: 2px;
         right: 2px;
-        width: 8px;
-        height: 8px;
+        width: 10px; /* Pips maiores */
+        height: 10px;
         border-radius: 50%;
+        border: 1px solid #1e002d; /* Contorno escuro no pip */
       }
       .bonus-pip.point {
-        background-color: #0288d1; /* Azul pode ser mantido para contraste */
-      }
+        background-color: #00bcd4;
+      } /* Turquesa */
       .bonus-pip.multi {
-        background-color: #ef6c00; /* Laranja para multiplicador */
-      }
+        background-color: #ff6f00;
+      } /* Laranja */
 
       #play-button {
         width: 70px;
         height: 70px;
         border-radius: 50%;
-        background-color: #4caf50; /* Verde mais vibrante para ação principal */
+        background-color: #ff0099; /* Rosa choque */
         color: white;
         font-size: 2.5em;
-        border: none;
+        border: 2px solid white;
         cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.2s;
+        box-shadow: 0 0 15px rgba(255, 0, 153, 0.7);
+        transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
         display: flex;
         justify-content: center;
         align-items: center;
       }
       #play-button:hover:not(:disabled) {
-        background-color: #388e3c; /* Verde mais escuro no hover */
+        background-color: #e00080;
+        box-shadow: 0 0 20px rgba(255, 0, 153, 1);
+      }
+      #play-button:active:not(:disabled) {
+        transform: scale(0.95);
       }
       #play-button:disabled {
-        background-color: #a5d6a7; /* Verde claro para desabilitado */
+        background-color: #7c004c;
+        border-color: #b86fa0;
+        box-shadow: none;
         cursor: not-allowed;
         opacity: 0.7;
       }
@@ -252,44 +263,46 @@
         gap: 10px;
         margin-bottom: 10px;
       }
-      #hand-controls button,
-      #bottom-area > button {
+      #hand-controls button {
         padding: 8px 12px;
         border-radius: 5px;
-        border: none;
-        background-color: #795548; /* Marrom para controles da mão */
-        color: #f5e6c8; /* Texto claro */
+        border: 1px solid #ffc107; /* Borda Amarela */
+        background-color: #2c0b3f; /* Fundo Roxo Escuro */
+        color: #ffc107; /* Texto Amarelo */
         cursor: pointer;
         font-size: 0.9em;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+        font-weight: bold;
       }
-      #hand-controls button:hover:not(:disabled),
-      #bottom-area > button:hover:not(:disabled) {
-        background-color: #5d4037;
+      #hand-controls button:hover:not(:disabled) {
+        background-color: #ffc107;
+        color: #1e002d;
       }
-      #hand-controls button:disabled,
-      #bottom-area > button:disabled {
-        background-color: #bcaaa4; /* Marrom mais claro para desabilitado */
-        cursor: not-allowed;
+      #hand-controls button:disabled {
+        background-color: #4a2b5e;
+        color: #8c6b9e;
+        border-color: #8c6b9e;
+        box-shadow: none;
       }
 
       #player-hand {
         display: flex;
         gap: 5px;
         padding: 10px;
-        background-color: #bcaaa4; /* Fundo da área da mão - um tom de pedra/madeira */
+        background-color: #1a0823; /* Fundo da mão - Roxo bem escuro */
         border-radius: 10px;
-        min-height: 70px; /* Aumentado um pouco */
+        min-height: 70px;
         flex-wrap: wrap;
         justify-content: center;
         transition: background-color 0.2s;
+        border: 1px solid #76ff03; /* Borda verde limão */
       }
 
       .letter-tile {
         width: 45px;
         height: 45px;
-        background-color: #fff176; /* Amarelo claro, como osso ou madeira clara */
-        border: 2px solid #a1887f; /* Borda marrom mais grossa */
+        background-color: #fefae0; /* Fundo osso/creme bem claro */
+        border: 2px solid #00bcd4; /* Borda Turquesa */
         border-radius: 5px;
         display: flex;
         flex-direction: column;
@@ -297,25 +310,28 @@
         align-items: center;
         font-size: 1.6em;
         font-weight: bold;
-        color: #4e342e; /* Letra em marrom escuro */
+        color: #1e002d; /* Letra roxo escuro */
         cursor: grab;
         user-select: none;
-        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 5px rgba(0, 188, 212, 0.5);
         position: relative;
-        transition: opacity 0.2s, transform 0.2s;
+        transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      }
+      .letter-tile:hover {
+        box-shadow: 0 0 10px rgba(0, 188, 212, 0.8);
       }
       .letter-tile.dragging {
-        opacity: 0.5;
+        opacity: 0.6;
         transform: scale(1.1);
         cursor: grabbing;
       }
       .letter-tile span.value {
         font-size: 0.5em;
-        font-weight: normal;
+        font-weight: bold;
         position: absolute;
         bottom: 2px;
         right: 4px;
-        color: #795548; /* Valor da letra em marrom */
+        color: #ff6f00; /* Valor da letra laranja */
       }
 
       /* --- POPUP FIM DE JOGO --- */
@@ -324,42 +340,52 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: #faf0e6; /* Fundo de popup tipo pergaminho */
+        background-color: #210733; /* Fundo roxo escuro para popup */
         padding: 30px;
         border-radius: 15px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0 25px rgba(255, 0, 153, 0.6);
         text-align: center;
         z-index: 100;
-        border: 2px solid #8d6e63; /* Borda temática */
+        border: 2px solid #ffc107; /* Borda amarela */
+        color: #f8f8f8;
       }
       .popup.hidden {
         display: none;
       }
       .popup h2 {
         margin-top: 0;
-        color: #5d4037; /* Título do popup em marrom */
+        color: #ff0099; /* Título Rosa */
+        font-size: 2em;
       }
       .popup p {
         font-size: 1.2em;
-        margin: 15px 0;
-        color: #4a3b31;
+        margin: 20px 0;
       }
+      .popup strong {
+        color: #ffeb3b;
+      } /* Pontuação final em amarelo brilhante */
       .popup button {
-        padding: 10px 20px;
-        background-color: #4caf50; /* Verde temático */
-        color: white;
+        padding: 12px 25px;
+        background-color: #76ff03; /* Botão verde limão */
+        color: #1e002d; /* Texto escuro */
         border: none;
         border-radius: 8px;
-        font-size: 1em;
+        font-size: 1.1em;
         cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s, transform 0.1s;
       }
       .popup button:hover {
-        background-color: #388e3c;
+        background-color: #64dd17;
+      }
+      .popup button:active {
+        transform: scale(0.97);
       }
 
       .drag-over {
-        background-color: #c8b7a6 !important; /* Tom de areia mais escuro para drag over */
-        border-color: #795548 !important; /* Borda marrom escura para drag over */
+        background-color: #4a2b5e !important;
+        border-color: #76ff03 !important; /* Verde Limão para drag over */
+        box-shadow: inset 0 0 10px rgba(118, 255, 3, 0.5);
       }
 
       #message-area {
@@ -368,12 +394,12 @@
         left: 50%;
         transform: translateX(-50%);
         background-color: rgba(
-          74,
-          59,
-          49,
-          0.85
-        ); /* Fundo da mensagem marrom escuro translúcido */
-        color: #f5e6c8; /* Texto claro na mensagem */
+          10,
+          0,
+          20,
+          0.9
+        ); /* Fundo da mensagem roxo bem escuro translúcido */
+        color: #00bcd4; /* Texto Turquesa */
         padding: 10px 20px;
         border-radius: 8px;
         font-size: 1em;
@@ -381,7 +407,9 @@
         opacity: 0;
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         pointer-events: none;
-        border: 1px solid #c8b7a6; /* Borda sutil na mensagem */
+        border: 1px solid #ff0099; /* Borda Rosa */
+        font-weight: bold;
+        text-shadow: 0 0 5px rgba(0, 188, 212, 0.7);
       }
       #message-area.visible {
         opacity: 1;
@@ -531,6 +559,7 @@
           null,
           { type: "multi", value: 1 },
         ];
+
         const dictionary = [
           // Objetos
           "MESA",
@@ -710,7 +739,8 @@
           "CRESCER",
           "CHEGAR",
           "BAILAR",
-        ].filter((palavra) => palavra.length <= NUM_BOARD_SLOTS); // Garante que nenhuma palavra exceda o tamanho do tabuleiro
+        ].filter((palavra) => palavra.length <= NUM_BOARD_SLOTS);
+
         let letterBag = [];
         let playerHand = [];
         let boardState = Array(NUM_BOARD_SLOTS).fill(null);
