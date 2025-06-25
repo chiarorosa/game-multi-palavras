@@ -226,6 +226,7 @@ export function clearWordFromBoard() {
     setBoardState(newBoard);
     setPlayerHand(currentHand);
     ui.renderBoard();
+    calculateAndUpdateWordScore(); // CORREÇÃO: Adicionada a chamada para recalcular o placar.
     sortHandAlpha();
   }
 }
@@ -406,6 +407,7 @@ export function handleDropOnPlayerHand(event) {
     setBoardState(newBoard);
     setPlayerHand(newHand);
     ui.renderBoard();
+    calculateAndUpdateWordScore(); // CORREÇÃO: Adicionada a chamada para recalcular o placar.
     sortHandAlpha();
   }
   setDraggedLetterInfo(null);
