@@ -1,863 +1,1141 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jogo de Palavras Conceitual</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            color: #333;
-            overflow-x: hidden;
-        }
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f5e6c8; /* Tom areia/pergaminho claro */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+        color: #4a3b31; /* Marrom escuro para texto padrão */
+        overflow-x: hidden;
+      }
 
-        #game-container {
-            width: 95%;
-            max-width: 900px;
-            min-height: 600px;
-            background: linear-gradient(135deg, #a7d7f9 50%, #f9c5d1 50%);
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            padding: 20px;
-            display: grid;
-            grid-template-areas:
-                "top-area top-area top-area"
-                "left-sidebar middle-area middle-area"
-                "left-sidebar bottom-area bottom-area";
-            grid-template-columns: 150px 1fr;
-            grid-template-rows: auto 1fr auto;
-            gap: 15px;
-            position: relative;
-        }
+      #game-container {
+        width: 95%;
+        max-width: 900px;
+        min-height: 600px;
+        background: #d2b48c; /* Marrom claro / Tan para o container principal */
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Sombra mais pronunciada */
+        padding: 20px;
+        display: grid;
+        grid-template-areas:
+          "top-area top-area top-area"
+          "left-sidebar middle-area middle-area"
+          "left-sidebar bottom-area bottom-area";
+        grid-template-columns: 150px 1fr;
+        grid-template-rows: auto 1fr auto;
+        gap: 15px;
+        position: relative;
+        border: 3px solid #7a5c58; /* Borda marrom escura para dar um toque rústico */
+      }
 
-        /* --- ÁREA SUPERIOR --- */
-        #top-area {
-            grid-area: top-area;
-            display: flex;
-            justify-content: space-around; 
-            align-items: center;
-            padding: 10px;
-            background-color: rgba(255,255,255,0.3);
-            border-radius: 15px;
-            margin-bottom: 10px;
-        }
+      /* --- ÁREA SUPERIOR --- */
+      #top-area {
+        grid-area: top-area;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px;
+        background-color: rgba(
+          94,
+          75,
+          63,
+          0.2
+        ); /* Fundo sutilmente mais escuro e temático */
+        border-radius: 15px;
+        margin-bottom: 10px;
+      }
 
-        .info-panel {
-            padding: 10px 15px;
-            border-radius: 10px;
-            color: white;
-            text-align: center;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-            min-width: 80px;
-        }
-        .info-panel .title {
-            font-size: 0.8em;
-            margin-bottom: 5px;
-        }
-        .info-panel .value {
-            font-size: 1.8em;
-            font-weight: bold;
-        }
+      .info-panel {
+        padding: 10px 15px;
+        border-radius: 10px;
+        /* color: white; Default removido, será específico por painel */
+        text-align: center;
+        box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        min-width: 80px;
+      }
+      .info-panel .title {
+        font-size: 0.8em;
+        margin-bottom: 5px;
+      }
+      .info-panel .value {
+        font-size: 1.8em;
+        font-weight: bold;
+      }
 
-        #points-panel { background-color: #5dade2; }
-        #multis-panel { background-color: #e74c3c; }
-        #score-panel { background-color: #8e44ad; min-width: 120px; }
-        #energy-panel {
-            background-color: #f39c12;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        #energy-panel .value { font-size: 2.2em; }
-        #energy-panel .icon { font-size: 1em; }
+      #points-panel {
+        background-color: #2e7d32; /* Verde floresta */
+        color: #f0f0f0;
+      }
+      #multis-panel {
+        background-color: #d84315; /* Laranja queimado */
+        color: #f0f0f0;
+      }
+      #score-panel {
+        background-color: #6d4c41; /* Marrom médio */
+        color: #f0f0f0;
+      }
+      #energy-panel {
+        background-color: #c62828; /* Vermelho mais intenso (lava/perigo) */
+        color: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      #energy-panel .value {
+        font-size: 2.2em;
+      }
+      #energy-panel .icon {
+        font-size: 1em;
+        color: #ffeb3b;
+      } /* Raio amarelo */
 
-        #top-area > span.multiplier-symbol {
-            font-size: 2em;
-            font-weight: bold;
-            color: #555;
-            margin: 0 5px;
-        }
+      #top-area > span.multiplier-symbol {
+        font-size: 2em;
+        font-weight: bold;
+        color: #4e342e; /* Marrom escuro */
+        margin: 0 5px;
+      }
 
-        #score-panel .value-container {
-            position: relative;
-        }
-         #score-panel .score-target {
-            font-size: 0.7em;
-            color: rgba(255,255,255,0.8);
-        }
+      #score-panel .value-container {
+        position: relative;
+      }
+      #score-panel .score-target {
+        font-size: 0.7em;
+        color: rgba(240, 240, 240, 0.8); /* Ajustado para fundo escuro */
+      }
 
-        /* --- ÁREA LATERAL ESQUERDA --- */
-        #left-sidebar {
-            grid-area: left-sidebar;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-            gap: 15px;
-        }
-        #left-sidebar button {
-            padding: 10px;
-            width: 100px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            background-color: #7f8c8d;
-            color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            transition: background-color 0.2s;
-        }
-        #left-sidebar button:hover:not(:disabled) {
-            background-color: #95a5a6;
-        }
-        #left-sidebar button:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-        #swap-letters-button span {
-            font-weight: bold;
-            color: #f39c12;
-        }
-        #menu-button { font-size: 1.5em; background-color: #bdc3c7;}
+      /* --- ÁREA LATERAL ESQUERDA --- */
+      #left-sidebar {
+        grid-area: left-sidebar;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        gap: 15px;
+      }
+      #left-sidebar button {
+        padding: 10px;
+        width: 100px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-size: 1em;
+        background-color: #5d4037; /* Marrom para botões da sidebar */
+        color: #f5e6c8; /* Texto claro */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.2s;
+      }
+      #left-sidebar button:hover:not(:disabled) {
+        background-color: #795548;
+      }
+      #left-sidebar button:disabled {
+        background-color: #a1887f; /* Tom marrom mais claro para desabilitado */
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      #swap-letters-button span {
+        font-weight: bold;
+        color: #ffb300; /* Destaque amarelo/laranja para custo de energia */
+      }
+      #menu-button {
+        font-size: 1.5em;
+        background-color: #a1887f; /* Tom marrom mais claro */
+      }
 
+      /* --- ÁREA CENTRAL --- */
+      #middle-area {
+        grid-area: middle-area;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        gap: 20px;
+      }
 
-        /* --- ÁREA CENTRAL --- */
-        #middle-area {
-            grid-area: middle-area;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px;
-            gap: 20px;
-        }
+      #board {
+        display: flex;
+        gap: 5px;
+        background-color: #a1887f; /* Fundo do tabuleiro - marrom claro / pedra */
+        padding: 10px;
+        border-radius: 10px;
+      }
 
-        #board {
-            display: flex;
-            gap: 5px;
-            background-color: rgba(255,255,255,0.2);
-            padding: 10px;
-            border-radius: 10px;
-        }
+      .board-slot {
+        width: 50px;
+        height: 50px;
+        background-color: #d7ccc8; /* Cinza claro / Pedra para os slots */
+        border: 2px dashed #8d6e63; /* Borda tracejada marrom */
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        position: relative;
+        color: #3e2723; /* Texto dentro do slot */
+        transition: background-color 0.2s, border-color 0.2s;
+      }
+      .board-slot.has-letter {
+        border-style: solid;
+        border-color: #5d4037; /* Marrom escuro para borda de letra no slot */
+        background-color: #efebe9; /* Fundo do slot com letra - pedra mais clara */
+      }
+      .board-slot.has-letter .letter-char {
+        pointer-events: none;
+      }
+      .board-slot.has-letter .value {
+        pointer-events: none;
+      }
 
-        .board-slot {
-            width: 50px;
-            height: 50px;
-            background-color: #ecf0f1;
-            border: 2px dashed #bdc3c7;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5em;
-            font-weight: bold;
-            position: relative;
-            color: #2c3e50;
-            transition: background-color 0.2s, border-color 0.2s;
-        }
-        .board-slot.has-letter {
-            border-style: solid;
-            border-color: #3498db;
-            background-color: #e0f0ff; 
-        }
-         .board-slot.has-letter .letter-char {
-            pointer-events: none; 
-        }
-        .board-slot.has-letter .value {
-             pointer-events: none;
-        }
+      .board-slot .bonus-pip {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .bonus-pip.point {
+        background-color: #0288d1; /* Azul pode ser mantido para contraste */
+      }
+      .bonus-pip.multi {
+        background-color: #ef6c00; /* Laranja para multiplicador */
+      }
 
+      #play-button {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: #4caf50; /* Verde mais vibrante para ação principal */
+        color: white;
+        font-size: 2.5em;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.2s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #play-button:hover:not(:disabled) {
+        background-color: #388e3c; /* Verde mais escuro no hover */
+      }
+      #play-button:disabled {
+        background-color: #a5d6a7; /* Verde claro para desabilitado */
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
 
-        .board-slot .bonus-pip {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        .bonus-pip.point { background-color: #3498db; }
-        .bonus-pip.multi { background-color: #e74c3c; }
+      /* --- ÁREA INFERIOR --- */
+      #bottom-area {
+        grid-area: bottom-area;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+        gap: 10px;
+      }
 
+      #hand-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      #hand-controls button,
+      #bottom-area > button {
+        padding: 8px 12px;
+        border-radius: 5px;
+        border: none;
+        background-color: #795548; /* Marrom para controles da mão */
+        color: #f5e6c8; /* Texto claro */
+        cursor: pointer;
+        font-size: 0.9em;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      #hand-controls button:hover:not(:disabled),
+      #bottom-area > button:hover:not(:disabled) {
+        background-color: #5d4037;
+      }
+      #hand-controls button:disabled,
+      #bottom-area > button:disabled {
+        background-color: #bcaaa4; /* Marrom mais claro para desabilitado */
+        cursor: not-allowed;
+      }
 
-        #play-button {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background-color: #2ecc71;
-            color: white;
-            font-size: 2.5em;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            transition: background-color 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #play-button:hover:not(:disabled) {
-            background-color: #27ae60;
-        }
-        #play-button:disabled {
-            background-color: #95a5a6;
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
+      #player-hand {
+        display: flex;
+        gap: 5px;
+        padding: 10px;
+        background-color: #bcaaa4; /* Fundo da área da mão - um tom de pedra/madeira */
+        border-radius: 10px;
+        min-height: 70px; /* Aumentado um pouco */
+        flex-wrap: wrap;
+        justify-content: center;
+        transition: background-color 0.2s;
+      }
 
-        /* --- ÁREA INFERIOR --- */
-        #bottom-area {
-            grid-area: bottom-area;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 10px;
-            gap: 10px;
-        }
+      .letter-tile {
+        width: 45px;
+        height: 45px;
+        background-color: #fff176; /* Amarelo claro, como osso ou madeira clara */
+        border: 2px solid #a1887f; /* Borda marrom mais grossa */
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.6em;
+        font-weight: bold;
+        color: #4e342e; /* Letra em marrom escuro */
+        cursor: grab;
+        user-select: none;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+        position: relative;
+        transition: opacity 0.2s, transform 0.2s;
+      }
+      .letter-tile.dragging {
+        opacity: 0.5;
+        transform: scale(1.1);
+        cursor: grabbing;
+      }
+      .letter-tile span.value {
+        font-size: 0.5em;
+        font-weight: normal;
+        position: absolute;
+        bottom: 2px;
+        right: 4px;
+        color: #795548; /* Valor da letra em marrom */
+      }
 
-        #hand-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        #hand-controls button, #bottom-area > button { 
-            padding: 8px 12px;
-            border-radius: 5px;
-            border: none;
-            background-color: #9b59b6;
-            color: white;
-            cursor: pointer;
-            font-size: 0.9em;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        #hand-controls button:hover:not(:disabled), #bottom-area > button:hover:not(:disabled) {
-            background-color: #8e44ad;
-        }
-         #hand-controls button:disabled, #bottom-area > button:disabled {
-            background-color: #c3a0d6;
-            cursor: not-allowed;
-        }
+      /* --- POPUP FIM DE JOGO --- */
+      .popup {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #faf0e6; /* Fundo de popup tipo pergaminho */
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        z-index: 100;
+        border: 2px solid #8d6e63; /* Borda temática */
+      }
+      .popup.hidden {
+        display: none;
+      }
+      .popup h2 {
+        margin-top: 0;
+        color: #5d4037; /* Título do popup em marrom */
+      }
+      .popup p {
+        font-size: 1.2em;
+        margin: 15px 0;
+        color: #4a3b31;
+      }
+      .popup button {
+        padding: 10px 20px;
+        background-color: #4caf50; /* Verde temático */
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        cursor: pointer;
+      }
+      .popup button:hover {
+        background-color: #388e3c;
+      }
 
-        #player-hand {
-            display: flex;
-            gap: 5px;
-            padding: 10px;
-            background-color: rgba(0,0,0,0.1);
-            border-radius: 10px;
-            min-height: 65px;
-            flex-wrap: wrap;
-            justify-content: center;
-            transition: background-color 0.2s;
-        }
+      .drag-over {
+        background-color: #c8b7a6 !important; /* Tom de areia mais escuro para drag over */
+        border-color: #795548 !important; /* Borda marrom escura para drag over */
+      }
 
-        .letter-tile {
-            width: 45px;
-            height: 45px;
-            background-color: #f1c40f;
-            border: 1px solid #f39c12;
-            border-radius: 5px;
-            display: flex;
-            flex-direction: column; 
-            justify-content: center;
-            align-items: center;
-            font-size: 1.6em;
-            font-weight: bold;
-            color: #333;
-            cursor: grab;
-            user-select: none;
-            box-shadow: 2px 2px 3px rgba(0,0,0,0.2);
-            position: relative; 
-            transition: opacity 0.2s, transform 0.2s;
-        }
-        .letter-tile.dragging {
-            opacity: 0.5;
-            transform: scale(1.1);
-            cursor: grabbing;
-        }
-        .letter-tile span.value {
-            font-size: 0.5em;
-            font-weight: normal;
-            position: absolute;
-            bottom: 2px;
-            right: 4px;
-            color: #7f8c8d;
-        }
-
-        /* --- POPUP FIM DE JOGO --- */
-        .popup {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-            text-align: center;
-            z-index: 100;
-        }
-        .popup.hidden {
-            display: none;
-        }
-        .popup h2 { margin-top: 0; color: #2c3e50; }
-        .popup p { font-size: 1.2em; margin: 15px 0; }
-        .popup button {
-            padding: 10px 20px;
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-        .popup button:hover { background-color: #27ae60; }
-
-        .drag-over {
-            background-color: #d5dbdb !important; 
-            border-color: #2980b9 !important;
-        }
-
-        #message-area {
-            position: fixed; 
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0,0,0,0.75);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 1em;
-            z-index: 110;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-            pointer-events: none; 
-        }
-        #message-area.visible {
-            opacity: 1;
-            transform: translate(-50%, -10px); 
-        }
+      #message-area {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(
+          74,
+          59,
+          49,
+          0.85
+        ); /* Fundo da mensagem marrom escuro translúcido */
+        color: #f5e6c8; /* Texto claro na mensagem */
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 1em;
+        z-index: 110;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        pointer-events: none;
+        border: 1px solid #c8b7a6; /* Borda sutil na mensagem */
+      }
+      #message-area.visible {
+        opacity: 1;
+        transform: translate(-50%, -10px);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="game-container">
-        <div id="top-area">
-            <div id="points-panel" class="info-panel">
-                <div class="title">Pontos</div>
-                <div id="current-word-points" class="value">0</div>
-            </div>
-            <span class="multiplier-symbol">x</span>
-            <div id="multis-panel" class="info-panel">
-                <div class="title">Multis</div>
-                <div id="current-word-multis" class="value">0</div>
-            </div>
-            <div id="score-panel" class="info-panel">
-                <div class="title">Pontuação</div>
-                <div class="value-container">
-                    <span id="total-score" class="value">0</span>
-                    <span class="score-target">/60</span>
-                </div>
-            </div>
-            <div id="energy-panel" class="info-panel">
-                <span id="current-energy" class="value">3</span>
-                <span class="icon">⚡</span>
-            </div>
+      <div id="top-area">
+        <div id="points-panel" class="info-panel">
+          <div class="title">Pontos</div>
+          <div id="current-word-points" class="value">0</div>
         </div>
-
-        <div id="left-sidebar">
-            <button id="menu-button" title="Menu (Não implementado)">☰</button>
-            <button id="swap-letters-button" title="Trocar todas as letras da mão">Trocar <span id="swap-cost">1⚡</span></button>
+        <span class="multiplier-symbol">x</span>
+        <div id="multis-panel" class="info-panel">
+          <div class="title">Multis</div>
+          <div id="current-word-multis" class="value">0</div>
         </div>
-
-        <div id="middle-area">
-            <div id="board"></div>
-            <button id="play-button" title="Validar Palavra">▶</button>
+        <div id="score-panel" class="info-panel">
+          <div class="title">Pontuação</div>
+          <div class="value-container">
+            <span id="total-score" class="value">0</span>
+            <span class="score-target">/60</span>
+          </div>
         </div>
-
-        <div id="bottom-area">
-            <div id="hand-controls">
-                <button id="sort-alpha-button" title="Ordenar letras da mão alfabeticamente">ABC</button>
-                <button id="clear-word-button" title="Remover letras do tabuleiro para a mão">Limpar</button>
-            </div>
-            <div id="player-hand" title="Arraste letras daqui para o tabuleiro ou do tabuleiro para cá"></div>
+        <div id="energy-panel" class="info-panel">
+          <span id="current-energy" class="value">3</span>
+          <span class="icon">⚡</span>
         </div>
+      </div>
 
-        <div id="game-over-popup" class="popup hidden">
-            <h2>Fim de Jogo!</h2>
-            <p>Sua pontuação final: <strong id="final-score">0</strong></p>
-            <button id="restart-button">Jogar Novamente</button>
+      <div id="left-sidebar">
+        <button id="menu-button" title="Menu (Não implementado)">☰</button>
+        <button id="swap-letters-button" title="Trocar todas as letras da mão">
+          Trocar <span id="swap-cost">1⚡</span>
+        </button>
+      </div>
+
+      <div id="middle-area">
+        <div id="board"></div>
+        <button id="play-button" title="Validar Palavra">▶</button>
+      </div>
+
+      <div id="bottom-area">
+        <div id="hand-controls">
+          <button
+            id="sort-alpha-button"
+            title="Ordenar letras da mão alfabeticamente"
+          >
+            ABC
+          </button>
+          <button
+            id="clear-word-button"
+            title="Remover letras do tabuleiro para a mão"
+          >
+            Limpar
+          </button>
         </div>
+        <div
+          id="player-hand"
+          title="Arraste letras daqui para o tabuleiro ou do tabuleiro para cá"
+        ></div>
+      </div>
 
-        <div id="message-area">Mensagem aqui</div>
+      <div id="game-over-popup" class="popup hidden">
+        <h2>Fim de Jogo!</h2>
+        <p>Sua pontuação final: <strong id="final-score">0</strong></p>
+        <button id="restart-button">Jogar Novamente</button>
+      </div>
+
+      <div id="message-area">Mensagem aqui</div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const NUM_BOARD_SLOTS = 10;
-            const NUM_HAND_SLOTS = 10;
-            const INITIAL_ENERGY = 3;
-            const SWAP_COST = 1;
-            const MIN_VOWELS_IN_HAND = 3;
-            const MAX_REFILL_ATTEMPTS = 30; // Limite de tentativas para gerar mão válida
+      document.addEventListener("DOMContentLoaded", () => {
+        const NUM_BOARD_SLOTS = 10;
+        const NUM_HAND_SLOTS = 10;
+        const INITIAL_ENERGY = 3;
+        const SWAP_COST = 1;
+        const MIN_VOWELS_IN_HAND = 3;
+        const MAX_REFILL_ATTEMPTS = 30;
 
-            const VOWELS = ['A', 'E', 'I', 'O', 'U'];
+        const VOWELS = ["A", "E", "I", "O", "U"];
 
-            const letterValues = {
-                'A': 1, 'E': 1, 'I': 1, 'O': 1, 'S': 1, 'U': 1, 'M': 2, 'R': 2, 'T': 2,
-                'D': 3, 'L': 3, 'C': 3, 'P': 3, 'N': 4, 'B': 4, 'Ç': 5, 'F': 5, 'G': 5, 'H': 5, 'V': 5,
-                'J': 6, 'Q': 8, 'X': 8, 'Z': 8
+        const letterValues = {
+          A: 1,
+          E: 1,
+          I: 1,
+          O: 1,
+          S: 1,
+          U: 1,
+          M: 2,
+          R: 2,
+          T: 2,
+          D: 3,
+          L: 3,
+          C: 3,
+          P: 3,
+          N: 4,
+          B: 4,
+          Ç: 5,
+          F: 5,
+          G: 5,
+          H: 5,
+          V: 5,
+          J: 6,
+          Q: 8,
+          X: 8,
+          Z: 8,
+        };
+        const initialLetterBagDistribution = {
+          A: 14,
+          E: 11,
+          I: 10,
+          O: 10,
+          S: 8,
+          U: 7,
+          M: 6,
+          R: 6,
+          T: 5,
+          D: 5,
+          L: 5,
+          C: 4,
+          P: 4,
+          N: 4,
+          B: 3,
+          Ç: 2,
+          F: 2,
+          G: 2,
+          H: 2,
+          V: 2,
+          J: 2,
+          Q: 1,
+          X: 1,
+          Z: 1,
+        };
+        const boardBonusConfig = [
+          { type: "point", value: 1 },
+          { type: "multi", value: 1 },
+          { type: "multi", value: 1 },
+          { type: "multi", value: 1 },
+          null,
+          { type: "multi", value: 1 },
+          null,
+          { type: "point", value: 1 },
+          null,
+          { type: "multi", value: 1 },
+        ];
+        const dictionary = [
+          "LUIS",
+          "PONTO",
+          "MULTIS",
+          "JOGO",
+          "CASA",
+          "DEZ",
+          "SOL",
+          "MAR",
+          "REI",
+          "BOM",
+          "GATO",
+          "BOLA",
+          "DADO",
+          "FACA",
+          "MESA",
+          "POTE",
+          "RUA",
+          "SAPO",
+          "TUDO",
+          "VIDA",
+          "AMOR",
+          "AZUL",
+          "COR",
+          "DIA",
+          "FELIZ",
+          "HOJE",
+          "IRMA",
+          "LEAO",
+          "NOVO",
+          "PAI",
+          "MAE",
+          "FILHO",
+          "AGUA",
+          "TERRA",
+          "FOGO",
+          "AR",
+          "CEU",
+          "FLOR",
+          "VERDE",
+          "TESTE",
+          "OI",
+          "EU",
+          "TU",
+          "JA",
+          "LA",
+          "CA",
+          "PAZ",
+          "SAL",
+          "MEL",
+          "RIO",
+          "VAI",
+          "FOI",
+          "PULO",
+          "ALTO",
+          "BAIXO",
+          "FORTE",
+          "FRIO",
+          "QUEM",
+          "QUER",
+          "AQUI",
+          "DICA",
+          "APTO",
+          "FALAR",
+          "JOGAR",
+          "GANHA",
+          "PERDE",
+          "AJUDA",
+          "PALAVRA",
+          "LETRA",
+          "TRILHA",
+          "TRILHO",
+          "MUITO",
+          "POUCO",
+          "CERTO",
+          "ERRADO",
+          "MINIMO",
+          "VOGAL",
+        ];
+
+        let letterBag = [];
+        let playerHand = [];
+        let boardState = Array(NUM_BOARD_SLOTS).fill(null);
+        let currentEnergy, totalScore, currentWordPoints, currentWordMultis;
+        let draggedLetterInfo = null;
+        let gameActive = true;
+        let messageTimeout;
+
+        const boardElement = document.getElementById("board");
+        const playerHandElement = document.getElementById("player-hand");
+        const currentWordPointsElement = document.getElementById(
+          "current-word-points"
+        );
+        const currentWordMultisElement = document.getElementById(
+          "current-word-multis"
+        );
+        const totalScoreElement = document.getElementById("total-score");
+        const currentEnergyElement = document.getElementById("current-energy");
+        const playButton = document.getElementById("play-button");
+        const swapLettersButton = document.getElementById(
+          "swap-letters-button"
+        );
+        const clearWordButton = document.getElementById("clear-word-button");
+        const sortAlphaButton = document.getElementById("sort-alpha-button");
+        const gameOverPopup = document.getElementById("game-over-popup");
+        const finalScoreElement = document.getElementById("final-score");
+        const restartButton = document.getElementById("restart-button");
+        const menuButton = document.getElementById("menu-button");
+        const messageArea = document.getElementById("message-area");
+
+        function isVowel(letter) {
+          return VOWELS.includes(letter.toUpperCase());
+        }
+        function countVowelsInHand(handArray) {
+          return handArray.reduce(
+            (count, tile) => count + (tile && isVowel(tile.letter) ? 1 : 0),
+            0
+          );
+        }
+
+        function shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+        }
+
+        function createLetterBag() {
+          letterBag = [];
+          for (const letter in initialLetterBagDistribution) {
+            for (let i = 0; i < initialLetterBagDistribution[letter]; i++)
+              letterBag.push(letter);
+          }
+          shuffleArray(letterBag);
+        }
+
+        function generateUniqueId() {
+          return (
+            Date.now().toString(36) + Math.random().toString(36).substring(2)
+          );
+        }
+        function showMessage(text, duration = 2000) {
+          clearTimeout(messageTimeout);
+          messageArea.textContent = text;
+          messageArea.classList.add("visible");
+          messageTimeout = setTimeout(
+            () => messageArea.classList.remove("visible"),
+            duration
+          );
+        }
+
+        function renderBoard() {
+          boardElement.innerHTML = "";
+          boardState.forEach((slotContent, index) => {
+            const slotDiv = document.createElement("div");
+            slotDiv.classList.add("board-slot");
+            slotDiv.dataset.index = index;
+            if (slotContent) {
+              const letterCharDiv = document.createElement("div");
+              letterCharDiv.classList.add("letter-char");
+              letterCharDiv.textContent = slotContent.letter;
+              slotDiv.appendChild(letterCharDiv);
+              slotDiv.classList.add("has-letter");
+              slotDiv.draggable = true;
+              const valueSpan = document.createElement("span");
+              valueSpan.classList.add("value");
+              valueSpan.textContent = letterValues[slotContent.letter];
+              slotDiv.appendChild(valueSpan);
+              slotDiv.addEventListener("dragstart", handleDragStartBoardLetter);
+            }
+            const bonus = boardBonusConfig[index];
+            if (bonus) {
+              const pip = document.createElement("div");
+              pip.classList.add("bonus-pip", bonus.type);
+              slotDiv.appendChild(pip);
+            }
+            slotDiv.addEventListener("dragover", handleDragOver);
+            slotDiv.addEventListener("dragenter", handleDragEnter);
+            slotDiv.addEventListener("dragleave", handleDragLeave);
+            slotDiv.addEventListener("drop", handleDropOnBoardSlot);
+            boardElement.appendChild(slotDiv);
+          });
+          calculateAndUpdateWordScore();
+        }
+
+        function renderHand() {
+          playerHandElement.innerHTML = "";
+          playerHand.forEach((tile) => {
+            if (!tile) return;
+            const tileDiv = document.createElement("div");
+            tileDiv.classList.add("letter-tile");
+            tileDiv.textContent = tile.letter;
+            tileDiv.draggable = true;
+            tileDiv.dataset.handId = tile.id;
+            tileDiv.dataset.letter = tile.letter;
+            const valueSpan = document.createElement("span");
+            valueSpan.classList.add("value");
+            valueSpan.textContent = letterValues[tile.letter];
+            tileDiv.appendChild(valueSpan);
+            tileDiv.addEventListener("dragstart", handleDragStartHandLetter);
+            tileDiv.addEventListener("dragend", handleDragEndLetter);
+            playerHandElement.appendChild(tileDiv);
+          });
+        }
+
+        function renderStats() {
+          currentWordPointsElement.textContent = currentWordPoints;
+          currentWordMultisElement.textContent = currentWordMultis;
+          totalScoreElement.textContent = totalScore;
+          currentEnergyElement.textContent = currentEnergy;
+          const isBoardEmpty = boardState.every((s) => s === null);
+          playButton.disabled = !gameActive || isBoardEmpty;
+          clearWordButton.disabled = !gameActive || isBoardEmpty;
+          swapLettersButton.disabled =
+            !gameActive || currentEnergy < SWAP_COST || playerHand.length === 0;
+          sortAlphaButton.disabled = !gameActive || playerHand.length === 0;
+        }
+
+        function drawLettersFromBag(count, bagSource) {
+          const drawn = [];
+          for (let i = 0; i < count; i++) {
+            if (bagSource.length === 0) break;
+            drawn.push(bagSource.pop());
+          }
+          return drawn.map((letter) => ({ letter, id: generateUniqueId() }));
+        }
+
+        function canFormWord(word, handLettersList) {
+          const available = [...handLettersList];
+          for (const char of word.toUpperCase()) {
+            const index = available.indexOf(char);
+            if (index === -1) return false;
+            available.splice(index, 1);
+          }
+          return true;
+        }
+
+        function canFormAnyDictionaryWord(handTilesArray, dict) {
+          if (!handTilesArray || handTilesArray.length === 0) return false;
+          const handLetters = handTilesArray.map((tile) => tile.letter);
+          for (const word of dict) {
+            if (
+              word.length <= handLetters.length &&
+              canFormWord(word, handLetters)
+            ) {
+              return true;
+            }
+          }
+          return false;
+        }
+
+        function refillHand() {
+          let existingHandTiles = playerHand.filter(Boolean);
+
+          for (let attempt = 0; attempt < MAX_REFILL_ATTEMPTS; attempt++) {
+            let currentAttemptHandTiles = [...existingHandTiles];
+            let tempLetterBag = [...letterBag];
+            shuffleArray(tempLetterBag);
+
+            const neededToComplete =
+              NUM_HAND_SLOTS - currentAttemptHandTiles.length;
+            if (neededToComplete > 0) {
+              const drawnLettersForAttempt = drawLettersFromBag(
+                neededToComplete,
+                tempLetterBag
+              );
+              currentAttemptHandTiles.push(...drawnLettersForAttempt);
+            }
+
+            const hasEnoughVowels =
+              countVowelsInHand(currentAttemptHandTiles) >= MIN_VOWELS_IN_HAND;
+            const canFormWordFromDict = canFormAnyDictionaryWord(
+              currentAttemptHandTiles,
+              dictionary
+            );
+
+            if (
+              currentAttemptHandTiles.length === NUM_HAND_SLOTS &&
+              hasEnoughVowels &&
+              canFormWordFromDict
+            ) {
+              playerHand = currentAttemptHandTiles;
+              letterBag = tempLetterBag;
+              renderHand();
+              return;
+            }
+          }
+
+          console.warn(
+            `Não foi possível gerar mão com ${MIN_VOWELS_IN_HAND} vogais E palavra formável. Preenchendo da melhor forma possível.`
+          );
+          playerHand = existingHandTiles;
+          const neededFinally = NUM_HAND_SLOTS - playerHand.length;
+          if (neededFinally > 0) {
+            const newLetters = drawLettersFromBag(neededFinally, letterBag);
+            playerHand.push(...newLetters);
+          }
+
+          let currentVowels = countVowelsInHand(playerHand);
+          let consonantsInHandIndices = [];
+          playerHand.forEach((tile, index) => {
+            if (tile && !isVowel(tile.letter))
+              consonantsInHandIndices.push(index);
+          });
+          shuffleArray(consonantsInHandIndices);
+
+          let availableVowelsInGlobalBag = letterBag.filter((l) => isVowel(l));
+          shuffleArray(availableVowelsInGlobalBag);
+
+          let replacedForVowelFallback = 0;
+          while (
+            currentVowels < MIN_VOWELS_IN_HAND &&
+            consonantsInHandIndices.length > 0 &&
+            availableVowelsInGlobalBag.length > 0 &&
+            playerHand.length === NUM_HAND_SLOTS
+          ) {
+            const consIdx = consonantsInHandIndices.pop();
+            const vowelToTake = availableVowelsInGlobalBag.pop();
+
+            const globalBagVowelIdx = letterBag.indexOf(vowelToTake);
+            if (globalBagVowelIdx > -1) letterBag.splice(globalBagVowelIdx, 1);
+            else continue;
+
+            const oldConsTile = playerHand[consIdx];
+            letterBag.push(oldConsTile.letter);
+
+            playerHand[consIdx] = {
+              letter: vowelToTake,
+              id: generateUniqueId(),
             };
-            const initialLetterBagDistribution = {
-                'A': 14, 'E': 11, 'I': 10, 'O': 10, 'S': 8, 'U': 7, 'M': 6, 'R': 6, 'T': 5, 
-                'D': 5, 'L': 5, 'C': 4, 'P': 4, 'N': 4, 'B': 3, 'Ç': 2, 'F': 2, 'G': 2, 'H': 2, 'V': 2,
-                'J': 2, 'Q': 1, 'X': 1, 'Z': 1
-            };
-            const boardBonusConfig = [
-                { type: 'point', value: 1 }, { type: 'multi', value: 1 }, { type: 'multi', value: 1 }, { type: 'multi', value: 1 },  null,
-                { type: 'multi', value: 1 }, null, { type: 'point', value: 1 }, null, { type: 'multi', value: 1 }
-            ];
-            const dictionary = [
-                "LUIS", "PONTO", "MULTIS", "JOGO", "CASA", "DEZ", "SOL", "MAR", "REI", "BOM", "GATO", "BOLA", "DADO",
-                "FACA", "MESA", "POTE", "RUA", "SAPO", "TUDO", "VIDA", "AMOR", "AZUL", "COR", "DIA", "FELIZ", "HOJE",
-                "IRMA", "LEAO", "NOVO", "PAI", "MAE", "FILHO", "AGUA", "TERRA", "FOGO", "AR", "CEU", "FLOR", "VERDE",
-                "TESTE", "OI", "EU", "TU", "JA", "LA", "CA", "PAZ", "SAL", "MEL", "RIO", "VAI", "FOI", "PULO", "ALTO",
-                "BAIXO", "FORTE", "FRIO", "QUEM", "QUER", "AQUI", "DICA", "APTO", "FALAR", "JOGAR", "GANHA", "PERDE",
-                "AJUDA", "PALAVRA", "LETRA", "TRILHA", "TRILHO", "MUITO", "POUCO", "CERTO", "ERRADO", "MINIMO", "VOGAL"
-            ];
+            currentVowels++;
+            replacedForVowelFallback++;
+          }
+          if (replacedForVowelFallback > 0) shuffleArray(letterBag);
 
-            let letterBag = [];
-            let playerHand = []; 
-            let boardState = Array(NUM_BOARD_SLOTS).fill(null); 
-            let currentEnergy, totalScore, currentWordPoints, currentWordMultis;
-            let draggedLetterInfo = null;
-            let gameActive = true;
-            let messageTimeout;
+          renderHand();
+        }
 
-            // Elementos DOM (encurtado para brevidade, mas igual ao anterior)
-            const boardElement = document.getElementById('board');
-            const playerHandElement = document.getElementById('player-hand');
-            const currentWordPointsElement = document.getElementById('current-word-points');
-            const currentWordMultisElement = document.getElementById('current-word-multis');
-            const totalScoreElement = document.getElementById('total-score');
-            const currentEnergyElement = document.getElementById('current-energy');
-            const playButton = document.getElementById('play-button');
-            const swapLettersButton = document.getElementById('swap-letters-button');
-            const clearWordButton = document.getElementById('clear-word-button');
-            const sortAlphaButton = document.getElementById('sort-alpha-button');
-            const gameOverPopup = document.getElementById('game-over-popup');
-            const finalScoreElement = document.getElementById('final-score');
-            const restartButton = document.getElementById('restart-button');
-            const menuButton = document.getElementById('menu-button');
-            const messageArea = document.getElementById('message-area');
-
-
-            function isVowel(letter) { return VOWELS.includes(letter.toUpperCase()); }
-            function countVowelsInHand(handArray) {
-                return handArray.reduce((count, tile) => count + (tile && isVowel(tile.letter) ? 1 : 0), 0);
+        function calculateAndUpdateWordScore() {
+          let points = 0;
+          let multis = 0;
+          let wordFormed = false;
+          boardState.forEach((slotContent, index) => {
+            if (slotContent) {
+              wordFormed = true;
+              points += letterValues[slotContent.letter];
+              const bonus = boardBonusConfig[index];
+              if (bonus) {
+                if (bonus.type === "point") points += bonus.value;
+                if (bonus.type === "multi") multis += bonus.value;
+              }
             }
+          });
+          currentWordPoints = wordFormed ? points : 0;
+          currentWordMultis = wordFormed ? multis : 0;
+          renderStats();
+        }
 
-            function shuffleArray(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
+        function clearWordFromBoard() {
+          if (!gameActive) return;
+          let lettersMoved = false;
+          for (let i = 0; i < boardState.length; i++) {
+            if (boardState[i]) {
+              playerHand.push(boardState[i]);
+              boardState[i] = null;
+              lettersMoved = true;
             }
+          }
+          if (lettersMoved) {
+            renderBoard();
+            sortHandAlpha();
+            renderHand();
+          }
+        }
 
-            function createLetterBag() {
-                letterBag = [];
-                for (const letter in initialLetterBagDistribution) {
-                    for (let i = 0; i < initialLetterBagDistribution[letter]; i++) letterBag.push(letter);
-                }
-                shuffleArray(letterBag);
+        function isValidWord(word) {
+          if (word.length < 2) return false;
+          return dictionary.includes(word.toUpperCase());
+        }
+
+        function handlePlayWord() {
+          if (!gameActive) return;
+          const word = boardState.map((s) => (s ? s.letter : "")).join("");
+          if (word.length === 0) {
+            showMessage("Forme uma palavra primeiro!", 1500);
+            return;
+          }
+
+          if (isValidWord(word)) {
+            const scoreFromWord = currentWordPoints * (1 + currentWordMultis);
+            totalScore += scoreFromWord;
+            currentEnergy -= 1;
+            boardState.fill(null);
+            refillHand();
+            showMessage(`"${word}" +${scoreFromWord} pts!`, 2000);
+            checkGameOver();
+          } else {
+            showMessage(`"${word}" não é válida!`, 2000);
+          }
+          renderBoard();
+        }
+
+        function handleSwapLetters() {
+          if (
+            !gameActive ||
+            currentEnergy < SWAP_COST ||
+            playerHand.length === 0
+          ) {
+            showMessage(
+              playerHand.length === 0 ? "Mão vazia!" : "Energia insuficiente!",
+              1500
+            );
+            return;
+          }
+          currentEnergy -= SWAP_COST;
+          playerHand.forEach((tile) => {
+            if (tile) letterBag.push(tile.letter);
+          });
+          shuffleArray(letterBag);
+          playerHand = [];
+          refillHand();
+          renderStats();
+          showMessage("Letras trocadas!", 1500);
+          checkGameOver();
+        }
+
+        function sortHandAlpha() {
+          if (!gameActive) return;
+          playerHand.sort((a, b) =>
+            a && b ? a.letter.localeCompare(b.letter) : 0
+          );
+          renderHand();
+        }
+
+        function checkGameOver() {
+          if (currentEnergy <= 0) {
+            gameActive = false;
+            finalScoreElement.textContent = totalScore;
+            gameOverPopup.classList.remove("hidden");
+            showMessage("Fim de Jogo!", 3000);
+            renderStats();
+          }
+        }
+
+        function initializeGame() {
+          gameActive = true;
+          currentEnergy = INITIAL_ENERGY;
+          totalScore = 0;
+          currentWordPoints = 0;
+          currentWordMultis = 0;
+          createLetterBag();
+          playerHand = [];
+          boardState.fill(null);
+          refillHand();
+          gameOverPopup.classList.add("hidden");
+          document.getElementById("swap-cost").textContent = `${SWAP_COST}⚡`;
+          renderBoard();
+        }
+
+        function handleDragStartHandLetter(event) {
+          if (!gameActive) {
+            event.preventDefault();
+            return;
+          }
+          event.target.classList.add("dragging");
+          draggedLetterInfo = {
+            letter: event.target.dataset.letter,
+            id: event.target.dataset.handId,
+            origin: "hand",
+            element: event.target,
+          };
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("text/plain", event.target.dataset.handId);
+        }
+        function handleDragStartBoardLetter(event) {
+          if (!gameActive) {
+            event.preventDefault();
+            return;
+          }
+          const slotElement = event.target.closest(".board-slot.has-letter");
+          if (!slotElement) return;
+          const boardIndex = parseInt(slotElement.dataset.index);
+          const letterOnBoard = boardState[boardIndex];
+          if (!letterOnBoard) return;
+          slotElement.classList.add("dragging");
+          draggedLetterInfo = {
+            ...letterOnBoard,
+            origin: "board",
+            boardIndex: boardIndex,
+            element: slotElement,
+          };
+          event.dataTransfer.effectAllowed = "move";
+          event.dataTransfer.setData("text/plain", letterOnBoard.id);
+        }
+        function handleDragEndLetter(event) {
+          if (draggedLetterInfo && draggedLetterInfo.element)
+            draggedLetterInfo.element.classList.remove("dragging");
+          draggedLetterInfo = null;
+          document
+            .querySelectorAll(".drag-over")
+            .forEach((el) => el.classList.remove("drag-over"));
+        }
+        function handleDragOver(event) {
+          event.preventDefault();
+          event.dataTransfer.dropEffect = "move";
+        }
+        function handleDragEnter(event) {
+          event.preventDefault();
+          const target = event.target.closest(".board-slot, #player-hand");
+          if (target) {
+            if (
+              draggedLetterInfo &&
+              draggedLetterInfo.origin === "board" &&
+              target.classList.contains("board-slot") &&
+              parseInt(target.dataset.index) === draggedLetterInfo.boardIndex
+            )
+              return;
+            target.classList.add("drag-over");
+          }
+        }
+        function handleDragLeave(event) {
+          const target = event.target.closest(".board-slot, #player-hand");
+          if (target) target.classList.remove("drag-over");
+        }
+        function handleDropOnBoardSlot(event) {
+          event.preventDefault();
+          if (!gameActive || !draggedLetterInfo) return;
+          const targetSlotElement = event.target.closest(".board-slot");
+          if (!targetSlotElement) return;
+          targetSlotElement.classList.remove("drag-over");
+          const targetSlotIndex = parseInt(targetSlotElement.dataset.index);
+          const existingLetterInTarget = boardState[targetSlotIndex];
+
+          if (draggedLetterInfo.origin === "hand") {
+            if (!existingLetterInTarget) {
+              boardState[targetSlotIndex] = {
+                letter: draggedLetterInfo.letter,
+                id: draggedLetterInfo.id,
+              };
+              playerHand = playerHand.filter(
+                (tile) => tile.id !== draggedLetterInfo.id
+              );
+            } else {
+              const letterToHand = boardState[targetSlotIndex];
+              boardState[targetSlotIndex] = {
+                letter: draggedLetterInfo.letter,
+                id: draggedLetterInfo.id,
+              };
+              playerHand = playerHand.filter(
+                (tile) => tile.id !== draggedLetterInfo.id
+              );
+              playerHand.push(letterToHand);
             }
-
-            function generateUniqueId() { return Date.now().toString(36) + Math.random().toString(36).substring(2); }
-            function showMessage(text, duration = 2000) {
-                clearTimeout(messageTimeout);
-                messageArea.textContent = text;
-                messageArea.classList.add('visible');
-                messageTimeout = setTimeout(() => messageArea.classList.remove('visible'), duration);
+          } else if (draggedLetterInfo.origin === "board") {
+            if (draggedLetterInfo.boardIndex === targetSlotIndex) return;
+            if (!existingLetterInTarget) {
+              boardState[targetSlotIndex] =
+                boardState[draggedLetterInfo.boardIndex];
+              boardState[draggedLetterInfo.boardIndex] = null;
+            } else {
+              const temp = boardState[targetSlotIndex];
+              boardState[targetSlotIndex] =
+                boardState[draggedLetterInfo.boardIndex];
+              boardState[draggedLetterInfo.boardIndex] = temp;
             }
-            
-            function renderBoard() {
-                boardElement.innerHTML = '';
-                boardState.forEach((slotContent, index) => {
-                    const slotDiv = document.createElement('div');
-                    slotDiv.classList.add('board-slot');
-                    slotDiv.dataset.index = index;
-                    if (slotContent) {
-                        const letterCharDiv = document.createElement('div'); 
-                        letterCharDiv.classList.add('letter-char');
-                        letterCharDiv.textContent = slotContent.letter;
-                        slotDiv.appendChild(letterCharDiv);
-                        slotDiv.classList.add('has-letter');
-                        slotDiv.draggable = true; 
-                        const valueSpan = document.createElement('span');
-                        valueSpan.classList.add('value');
-                        valueSpan.textContent = letterValues[slotContent.letter];
-                        slotDiv.appendChild(valueSpan);
-                        slotDiv.addEventListener('dragstart', handleDragStartBoardLetter);
-                    }
-                    const bonus = boardBonusConfig[index];
-                    if (bonus) {
-                        const pip = document.createElement('div');
-                        pip.classList.add('bonus-pip', bonus.type);
-                        slotDiv.appendChild(pip);
-                    }
-                    slotDiv.addEventListener('dragover', handleDragOver);
-                    slotDiv.addEventListener('dragenter', handleDragEnter);
-                    slotDiv.addEventListener('dragleave', handleDragLeave);
-                    slotDiv.addEventListener('drop', handleDropOnBoardSlot);
-                    boardElement.appendChild(slotDiv);
-                });
-                calculateAndUpdateWordScore();
-            }
+          }
+          renderBoard();
+          renderHand();
+          draggedLetterInfo = null;
+        }
+        function handleDropOnPlayerHand(event) {
+          event.preventDefault();
+          if (
+            !gameActive ||
+            !draggedLetterInfo ||
+            draggedLetterInfo.origin !== "board"
+          )
+            return;
+          playerHandElement.classList.remove("drag-over");
+          const letterData = boardState[draggedLetterInfo.boardIndex];
+          if (letterData) {
+            playerHand.push(letterData);
+            boardState[draggedLetterInfo.boardIndex] = null;
+            renderBoard();
+            renderHand();
+          }
+          draggedLetterInfo = null;
+        }
 
-            function renderHand() {
-                playerHandElement.innerHTML = '';
-                playerHand.forEach((tile) => {
-                    if (!tile) return;
-                    const tileDiv = document.createElement('div');
-                    tileDiv.classList.add('letter-tile');
-                    tileDiv.textContent = tile.letter;
-                    tileDiv.draggable = true;
-                    tileDiv.dataset.handId = tile.id;
-                    tileDiv.dataset.letter = tile.letter;
-                    const valueSpan = document.createElement('span');
-                    valueSpan.classList.add('value');
-                    valueSpan.textContent = letterValues[tile.letter];
-                    tileDiv.appendChild(valueSpan);
-                    tileDiv.addEventListener('dragstart', handleDragStartHandLetter);
-                    tileDiv.addEventListener('dragend', handleDragEndLetter);
-                    playerHandElement.appendChild(tileDiv);
-                });
-            }
+        playButton.addEventListener("click", handlePlayWord);
+        swapLettersButton.addEventListener("click", handleSwapLetters);
+        clearWordButton.addEventListener("click", clearWordFromBoard);
+        sortAlphaButton.addEventListener("click", sortHandAlpha);
+        restartButton.addEventListener("click", initializeGame);
+        menuButton.addEventListener("click", () =>
+          showMessage("Menu não implementado.", 1500)
+        );
 
-            function renderStats() {
-                currentWordPointsElement.textContent = currentWordPoints;
-                currentWordMultisElement.textContent = currentWordMultis;
-                totalScoreElement.textContent = totalScore;
-                currentEnergyElement.textContent = currentEnergy;
-                const isBoardEmpty = boardState.every(s => s === null);
-                playButton.disabled = !gameActive || isBoardEmpty;
-                clearWordButton.disabled = !gameActive || isBoardEmpty;
-                swapLettersButton.disabled = !gameActive || currentEnergy < SWAP_COST || playerHand.length === 0;
-                sortAlphaButton.disabled = !gameActive || playerHand.length === 0;
-            }
+        playerHandElement.addEventListener("dragover", handleDragOver);
+        playerHandElement.addEventListener("dragenter", handleDragEnter);
+        playerHandElement.addEventListener("dragleave", handleDragLeave);
+        playerHandElement.addEventListener("drop", handleDropOnPlayerHand);
 
-            function drawLettersFromBag(count, bagSource) { // Agora aceita uma fonte de letras
-                const drawn = [];
-                for (let i = 0; i < count; i++) {
-                    if (bagSource.length === 0) break;
-                    drawn.push(bagSource.pop()); // Assume que bagSource são apenas strings de letras
-                }
-                return drawn.map(letter => ({ letter, id: generateUniqueId() })); // Transforma em objetos tile
-            }
-            
-            // --- LÓGICA DE FORMAÇÃO DE PALAVRA E REABASTECIMENTO DA MÃO ---
-            function canFormWord(word, handLettersList) {
-                const available = [...handLettersList]; // Cópia para modificar
-                for (const char of word.toUpperCase()) {
-                    const index = available.indexOf(char);
-                    if (index === -1) return false;
-                    available.splice(index, 1);
-                }
-                return true;
-            }
-
-            function canFormAnyDictionaryWord(handTilesArray, dict) {
-                if (!handTilesArray || handTilesArray.length === 0) return false;
-                const handLetters = handTilesArray.map(tile => tile.letter);
-                for (const word of dict) {
-                    if (word.length <= handLetters.length && canFormWord(word, handLetters)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            function refillHand() {
-                let existingHandTiles = playerHand.filter(Boolean); // Letras que o jogador já tem
-                
-                for (let attempt = 0; attempt < MAX_REFILL_ATTEMPTS; attempt++) {
-                    let currentAttemptHandTiles = [...existingHandTiles];
-                    let tempLetterBag = [...letterBag]; // Cópia do saco para esta tentativa
-                    shuffleArray(tempLetterBag); // Embaralhar cópia para variedade nas tentativas
-
-                    const neededToComplete = NUM_HAND_SLOTS - currentAttemptHandTiles.length;
-                    if (neededToComplete > 0) {
-                        const drawnLettersForAttempt = drawLettersFromBag(neededToComplete, tempLetterBag);
-                        currentAttemptHandTiles.push(...drawnLettersForAttempt);
-                    }
-                    
-                    // Condição 1: Tem o mínimo de vogais
-                    const hasEnoughVowels = countVowelsInHand(currentAttemptHandTiles) >= MIN_VOWELS_IN_HAND;
-                    // Condição 2: Pode formar alguma palavra do dicionário
-                    const canFormWordFromDict = canFormAnyDictionaryWord(currentAttemptHandTiles, dictionary);
-
-                    if (currentAttemptHandTiles.length === NUM_HAND_SLOTS && hasEnoughVowels && canFormWordFromDict) {
-                        // Sucesso!
-                        playerHand = currentAttemptHandTiles;
-                        letterBag = tempLetterBag; // Efetivar o uso das letras do saco
-                        renderHand();
-                        return;
-                    }
-                }
-
-                // Se chegou aqui, falhou em todas as tentativas de atender AMBOS os critérios
-                console.warn(`Não foi possível gerar mão com ${MIN_VOWELS_IN_HAND} vogais E palavra formável. Preenchendo da melhor forma possível.`);
-                // Fallback: Tentar preencher a mão com a lógica anterior (apenas garantir vogais se possível)
-                playerHand = existingHandTiles; // Começa com o que tinha
-                const neededFinally = NUM_HAND_SLOTS - playerHand.length;
-                if (neededFinally > 0) {
-                    // drawLettersFromBag agora espera um array de strings, letterBag é assim.
-                    const newLetters = drawLettersFromBag(neededFinally, letterBag); // Usa o letterBag GLOBAL
-                    playerHand.push(...newLetters);
-                }
-                
-                // Tentar ajustar vogais na mão final (best-effort)
-                let currentVowels = countVowelsInHand(playerHand);
-                let consonantsInHandIndices = [];
-                playerHand.forEach((tile, index) => { if (tile && !isVowel(tile.letter)) consonantsInHandIndices.push(index); });
-                shuffleArray(consonantsInHandIndices);
-
-                let availableVowelsInGlobalBag = letterBag.filter(l => isVowel(l));
-                shuffleArray(availableVowelsInGlobalBag);
-
-                let replacedForVowelFallback = 0;
-                while(currentVowels < MIN_VOWELS_IN_HAND && consonantsInHandIndices.length > 0 && availableVowelsInGlobalBag.length > 0 && playerHand.length === NUM_HAND_SLOTS) {
-                    const consIdx = consonantsInHandIndices.pop();
-                    const vowelToTake = availableVowelsInGlobalBag.pop();
-
-                    const globalBagVowelIdx = letterBag.indexOf(vowelToTake);
-                    if (globalBagVowelIdx > -1) letterBag.splice(globalBagVowelIdx, 1); else continue;
-
-                    const oldConsTile = playerHand[consIdx];
-                    letterBag.push(oldConsTile.letter); // Devolve consoante ao saco global
-
-                    playerHand[consIdx] = {letter: vowelToTake, id: generateUniqueId()};
-                    currentVowels++;
-                    replacedForVowelFallback++;
-                }
-                if(replacedForVowelFallback > 0) shuffleArray(letterBag);
-
-                renderHand();
-            }
-
-            function calculateAndUpdateWordScore() {
-                let points = 0; let multis = 0; let wordFormed = false;
-                boardState.forEach((slotContent, index) => {
-                    if (slotContent) {
-                        wordFormed = true;
-                        points += letterValues[slotContent.letter];
-                        const bonus = boardBonusConfig[index];
-                        if (bonus) {
-                            if (bonus.type === 'point') points += bonus.value;
-                            if (bonus.type === 'multi') multis += bonus.value;
-                        }
-                    }
-                });
-                currentWordPoints = wordFormed ? points : 0;
-                currentWordMultis = wordFormed ? multis : 0;
-                renderStats();
-            }
-            
-            function clearWordFromBoard() {
-                if (!gameActive) return;
-                let lettersMoved = false;
-                for (let i = 0; i < boardState.length; i++) {
-                    if (boardState[i]) {
-                        playerHand.push(boardState[i]);
-                        boardState[i] = null;
-                        lettersMoved = true;
-                    }
-                }
-                if (lettersMoved) {
-                    renderBoard(); 
-                    // Não precisa de refillHand aqui, pois as letras apenas voltaram. Reordenar é opcional.
-                    sortHandAlpha(); 
-                    renderHand(); // Para garantir que a mão seja exibida com as letras retornadas
-                }
-            }
-
-            function isValidWord(word) {
-                if (word.length < 2) return false; // Palavras muito curtas podem ser desabilitadas
-                return dictionary.includes(word.toUpperCase());
-            }
-
-            function handlePlayWord() {
-                if (!gameActive) return;
-                const word = boardState.map(s => s ? s.letter : '').join('');
-                if (word.length === 0) { showMessage("Forme uma palavra primeiro!", 1500); return; }
-
-                if (isValidWord(word)) {
-                    const scoreFromWord = currentWordPoints * (1 + currentWordMultis);
-                    totalScore += scoreFromWord;
-                    currentEnergy -= 1;
-                    boardState.fill(null); 
-                    refillHand(); // Ponto crucial onde a nova lógica de mão é chamada
-                    showMessage(`"${word}" +${scoreFromWord} pts!`, 2000);
-                    checkGameOver();
-                } else {
-                    showMessage(`"${word}" não é válida!`, 2000);
-                }
-                renderBoard(); // Renderiza tabuleiro (agora vazio) e atualiza pontos/multis da palavra para 0
-                // renderHand() é chamado por refillHand
-                // renderStats() é chamado por calculateAndUpdateWordScore (que é chamado por renderBoard)
-            }
-
-            function handleSwapLetters() {
-                if (!gameActive || currentEnergy < SWAP_COST || playerHand.length === 0) {
-                    showMessage(playerHand.length === 0 ? "Mão vazia!" : "Energia insuficiente!", 1500);
-                    return;
-                }
-                currentEnergy -= SWAP_COST;
-                playerHand.forEach(tile => { if (tile) letterBag.push(tile.letter); });
-                shuffleArray(letterBag);
-                playerHand = []; // Limpa a mão completamente
-                refillHand();    // Preenche com a nova lógica
-                renderStats();
-                showMessage("Letras trocadas!", 1500);
-                checkGameOver();
-            }
-            
-            function sortHandAlpha() {
-                if (!gameActive) return;
-                playerHand.sort((a, b) => (a && b) ? a.letter.localeCompare(b.letter) : 0);
-                renderHand();
-            }
-
-            function checkGameOver() {
-                if (currentEnergy <= 0) {
-                    gameActive = false;
-                    finalScoreElement.textContent = totalScore;
-                    gameOverPopup.classList.remove('hidden');
-                    showMessage("Fim de Jogo!", 3000);
-                    renderStats(); 
-                }
-            }
-
-            function initializeGame() {
-                gameActive = true;
-                currentEnergy = INITIAL_ENERGY;
-                totalScore = 0;
-                currentWordPoints = 0;
-                currentWordMultis = 0;
-                createLetterBag();
-                playerHand = [];
-                boardState.fill(null);
-                refillHand();
-                gameOverPopup.classList.add('hidden');
-                document.getElementById('swap-cost').textContent = `${SWAP_COST}⚡`;
-                renderBoard();
-            }
-
-            // --- HANDLERS DE DRAG AND DROP (sem alterações significativas, mantidos como antes) ---
-            function handleDragStartHandLetter(event) {
-                if (!gameActive) { event.preventDefault(); return; }
-                event.target.classList.add('dragging');
-                draggedLetterInfo = { letter: event.target.dataset.letter, id: event.target.dataset.handId, origin: 'hand', element: event.target };
-                event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('text/plain', event.target.dataset.handId);
-            }
-            function handleDragStartBoardLetter(event) {
-                if (!gameActive) { event.preventDefault(); return; }
-                const slotElement = event.target.closest('.board-slot.has-letter');
-                if (!slotElement) return;
-                const boardIndex = parseInt(slotElement.dataset.index);
-                const letterOnBoard = boardState[boardIndex];
-                if (!letterOnBoard) return;
-                slotElement.classList.add('dragging'); 
-                draggedLetterInfo = { ...letterOnBoard, origin: 'board', boardIndex: boardIndex, element: slotElement };
-                event.dataTransfer.effectAllowed = 'move';
-                event.dataTransfer.setData('text/plain', letterOnBoard.id);
-            }
-            function handleDragEndLetter(event) {
-                if (draggedLetterInfo && draggedLetterInfo.element) draggedLetterInfo.element.classList.remove('dragging');
-                draggedLetterInfo = null;
-                document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-            }
-            function handleDragOver(event) { event.preventDefault(); event.dataTransfer.dropEffect = 'move'; }
-            function handleDragEnter(event) {
-                event.preventDefault();
-                const target = event.target.closest('.board-slot, #player-hand');
-                if (target) {
-                    if (draggedLetterInfo && draggedLetterInfo.origin === 'board' && target.classList.contains('board-slot') && parseInt(target.dataset.index) === draggedLetterInfo.boardIndex) return;
-                    target.classList.add('drag-over');
-                }
-            }
-            function handleDragLeave(event) {
-                const target = event.target.closest('.board-slot, #player-hand');
-                if (target) target.classList.remove('drag-over');
-            }
-            function handleDropOnBoardSlot(event) {
-                event.preventDefault();
-                if (!gameActive || !draggedLetterInfo) return;
-                const targetSlotElement = event.target.closest('.board-slot');
-                if (!targetSlotElement) return;
-                targetSlotElement.classList.remove('drag-over');
-                const targetSlotIndex = parseInt(targetSlotElement.dataset.index);
-                const existingLetterInTarget = boardState[targetSlotIndex];
-
-                if (draggedLetterInfo.origin === 'hand') {
-                    if (!existingLetterInTarget) { 
-                        boardState[targetSlotIndex] = { letter: draggedLetterInfo.letter, id: draggedLetterInfo.id };
-                        playerHand = playerHand.filter(tile => tile.id !== draggedLetterInfo.id);
-                    } else { 
-                        const letterToHand = boardState[targetSlotIndex];
-                        boardState[targetSlotIndex] = { letter: draggedLetterInfo.letter, id: draggedLetterInfo.id };
-                        playerHand = playerHand.filter(tile => tile.id !== draggedLetterInfo.id);
-                        playerHand.push(letterToHand);
-                    }
-                } else if (draggedLetterInfo.origin === 'board') {
-                    if (draggedLetterInfo.boardIndex === targetSlotIndex) return; 
-                    if (!existingLetterInTarget) { 
-                        boardState[targetSlotIndex] = boardState[draggedLetterInfo.boardIndex];
-                        boardState[draggedLetterInfo.boardIndex] = null;
-                    } else { 
-                        const temp = boardState[targetSlotIndex];
-                        boardState[targetSlotIndex] = boardState[draggedLetterInfo.boardIndex];
-                        boardState[draggedLetterInfo.boardIndex] = temp;
-                    }
-                }
-                renderBoard();
-                renderHand(); 
-                draggedLetterInfo = null;
-            }
-            function handleDropOnPlayerHand(event) {
-                event.preventDefault();
-                if (!gameActive || !draggedLetterInfo || draggedLetterInfo.origin !== 'board') return;
-                playerHandElement.classList.remove('drag-over');
-                const letterData = boardState[draggedLetterInfo.boardIndex];
-                if(letterData){
-                    playerHand.push(letterData);
-                    boardState[draggedLetterInfo.boardIndex] = null;
-                    renderBoard();
-                    renderHand(); 
-                }
-                draggedLetterInfo = null;
-            }
-            
-            playButton.addEventListener('click', handlePlayWord);
-            swapLettersButton.addEventListener('click', handleSwapLetters);
-            clearWordButton.addEventListener('click', clearWordFromBoard);
-            sortAlphaButton.addEventListener('click', sortHandAlpha);
-            restartButton.addEventListener('click', initializeGame);
-            menuButton.addEventListener('click', () => showMessage("Menu não implementado.", 1500));
-
-            playerHandElement.addEventListener('dragover', handleDragOver);
-            playerHandElement.addEventListener('dragenter', handleDragEnter);
-            playerHandElement.addEventListener('dragleave', handleDragLeave);
-            playerHandElement.addEventListener('drop', handleDropOnPlayerHand);
-
-            initializeGame();
-        });
+        initializeGame();
+      });
     </script>
-</body>
+  </body>
 </html>
