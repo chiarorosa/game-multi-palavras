@@ -505,7 +505,6 @@
       <div id="middle-area">
         <div id="board"></div>
         <button id="play-button" title="Mixar Palavra">MIX</button>
-        <!-- BOTÃO ATUALIZADO -->
       </div>
 
       <div id="bottom-area">
@@ -514,7 +513,6 @@
             <li>
               <strong>MIX</strong> palavras para ganhar <strong>PONTOS</strong>!
             </li>
-            <!-- REGRA ATUALIZADA -->
             <li>
               Fim de jogo se <strong>ENERGIA</strong> chegar a
               <strong>0</strong>.
@@ -522,9 +520,10 @@
             <li>Validar palavra: -1 <strong>ENERGIA</strong></li>
             <li>Trocar letras: -1 <strong>ENERGIA</strong></li>
             <li>
-              Atingir a meta de <strong>PONTOS</strong>: +3
-              <strong>ENERGIA</strong>!
+              Meta de <strong>PONTOS</strong>: +3 <strong>ENERGIA</strong> +
+              Bônus por energia restante!
             </li>
+            <!-- REGRA ATUALIZADA -->
           </ul>
         </div>
         <div id="hand-controls">
@@ -557,7 +556,6 @@
     </div>
 
     <script>
-      // O JAVASCRIPT PERMANECE O MESMO DA VERSÃO ANTERIOR
       document.addEventListener("DOMContentLoaded", () => {
         const NUM_BOARD_SLOTS = 10;
         const NUM_HAND_SLOTS = 10;
@@ -1131,14 +1129,20 @@
           if (isValidWord(word)) {
             const scoreFromWord = currentWordPoints * (1 + currentWordMultis);
             totalScore += scoreFromWord;
-            currentEnergy -= 1;
+            currentEnergy -= 1; // Custo da palavra
+
+            let energyBeforeMetaProcessing = currentEnergy; // Energia restante APÓS pagar o custo da palavra
 
             if (totalScore >= targetScore) {
-              currentEnergy += 3;
+              const fixedBonus = 3;
+              const remainderBonus = Math.max(0, energyBeforeMetaProcessing); // Bônus é a energia que sobrou (não pode ser negativo)
+
+              currentEnergy += fixedBonus + remainderBonus;
+
               targetScore += 60;
               showMessage(
-                `META ATINGIDA! +3 ENERGIA! Próxima meta: ${targetScore} pts`,
-                3500
+                `META! +${fixedBonus} Energia +${remainderBonus} Bônus! Próxima meta: ${targetScore} pts`,
+                4000
               );
             } else {
               showMessage(`"${word}" +${scoreFromWord} pts!`, 2000);
@@ -1146,7 +1150,7 @@
 
             boardState.fill(null);
             refillHand();
-            checkGameOver();
+            checkGameOver(); // Verifica se a energia não ficou negativa ou zerada mesmo com bônus
           } else {
             showMessage(`"${word}" não é válida!`, 2000);
           }
@@ -1191,8 +1195,8 @@
             finalScoreElement.textContent = totalScore;
             gameOverPopup.classList.remove("hidden");
             showMessage("Fim de Jogo!", 3000);
-            renderStats();
           }
+          renderStats(); // Sempre atualiza stats, mesmo que não seja game over
         }
 
         function initializeGame() {
