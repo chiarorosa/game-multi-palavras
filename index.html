@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MultiLetra Mix (MLM)</title>
-    <!-- NOME DO JOGO ATUALIZADO -->
     <style>
       body {
         font-family: "Arial", sans-serif;
@@ -21,7 +20,7 @@
       #game-container {
         width: 95%;
         max-width: 900px;
-        min-height: 650px; /* Aumentado um pouco para o título */
+        min-height: 650px;
         background: #2c0b3f;
         border-radius: 20px;
         box-shadow: 0 0 30px rgba(255, 0, 153, 0.5),
@@ -29,12 +28,12 @@
         padding: 20px;
         display: grid;
         grid-template-areas:
-          "game-title game-title game-title" /* NOVA ÁREA PARA O TÍTULO */
+          "game-title game-title game-title"
           "top-area top-area top-area"
           "left-sidebar middle-area middle-area"
           "left-sidebar bottom-area bottom-area";
         grid-template-columns: 150px 1fr;
-        grid-template-rows: auto auto 1fr auto; /* Ajustado para nova linha */
+        grid-template-rows: auto auto 1fr auto;
         gap: 15px;
         position: relative;
         border: 2px solid #ff0099;
@@ -44,21 +43,20 @@
       #game-title-area {
         grid-area: game-title;
         text-align: center;
-        padding: 10px 0 5px 0; /* Espaçamento */
-        margin-bottom: 5px; /* Espaço antes dos painéis */
+        padding: 10px 0 5px 0;
+        margin-bottom: 5px;
       }
       #game-title-area h1 {
         font-size: 2.2em;
         font-weight: bold;
-        color: #ffc107; /* Amarelo Dourado */
+        color: #ffc107;
         margin: 0;
-        text-shadow: 2px 2px 0px #ff0099,
-          /* Sombra Rosa */ -2px -2px 0px #00bcd4; /* Sombra Turquesa */
+        text-shadow: 2px 2px 0px #ff0099, -2px -2px 0px #00bcd4;
         letter-spacing: 1px;
       }
       #game-title-area .subtitle {
         font-size: 1em;
-        color: #f0c5ff; /* Lavanda claro */
+        color: #f0c5ff;
         margin-top: -5px;
       }
 
@@ -243,15 +241,13 @@
       }
 
       #play-button {
-        width: auto;
-        min-width: 100px; /* Ajustado */
-        height: 65px; /* Ajustado */
-        border-radius: 15px;
+        width: 90px;
+        height: 70px;
+        border-radius: 50%;
         background-color: #ff0099;
         color: white;
-        font-size: 1.6em; /* Ajustado */
+        font-size: 1.8em;
         font-weight: bold;
-        padding: 0 20px; /* Ajustado */
         border: 2px solid white;
         cursor: pointer;
         box-shadow: 0 0 15px rgba(255, 0, 153, 0.7);
@@ -261,17 +257,12 @@
         align-items: center;
         line-height: 1;
       }
-      #play-button .play-button-highlight {
-        color: #ffeb3b;
-        margin-left: 3px; /* Ajustado */
-        font-style: italic;
-      }
       #play-button:hover:not(:disabled) {
         background-color: #e00080;
         box-shadow: 0 0 20px rgba(255, 0, 153, 1);
       }
       #play-button:active:not(:disabled) {
-        transform: scale(0.97);
+        transform: scale(0.95);
       }
       #play-button:disabled {
         background-color: #7c004c;
@@ -476,7 +467,6 @@
   <body>
     <div id="game-container">
       <div id="game-title-area">
-        <!-- TÍTULO DO JOGO ADICIONADO -->
         <h1>MultiLetra Mix</h1>
         <div class="subtitle">(MLM)</div>
       </div>
@@ -514,16 +504,17 @@
 
       <div id="middle-area">
         <div id="board"></div>
-        <button id="play-button" title="Validar Palavra">
-          <!-- BOTÃO ATUALIZADO -->
-          Valid<span class="play-button-highlight">AR</span>
-        </button>
+        <button id="play-button" title="Mixar Palavra">MIX</button>
+        <!-- BOTÃO ATUALIZADO -->
       </div>
 
       <div id="bottom-area">
         <div id="rules-area">
           <ul>
-            <li>Valide palavras para ganhar <strong>PONTOS</strong>!</li>
+            <li>
+              <strong>MIX</strong> palavras para ganhar <strong>PONTOS</strong>!
+            </li>
+            <!-- REGRA ATUALIZADA -->
             <li>
               Fim de jogo se <strong>ENERGIA</strong> chegar a
               <strong>0</strong>.
@@ -567,7 +558,6 @@
 
     <script>
       // O JAVASCRIPT PERMANECE O MESMO DA VERSÃO ANTERIOR
-      // (com as adições para score-target-value e a lógica de targetScore já implementadas)
       document.addEventListener("DOMContentLoaded", () => {
         const NUM_BOARD_SLOTS = 10;
         const NUM_HAND_SLOTS = 10;
