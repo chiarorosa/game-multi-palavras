@@ -254,8 +254,36 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 10px;
+        padding: 10px 0; /* Ajustado padding */
         gap: 10px;
+      }
+
+      #rules-area {
+        background-color: rgba(26, 8, 35, 0.7);
+        color: #f8f0f0;
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ffc107;
+        box-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
+        text-align: left;
+        max-width: 90%;
+      }
+      #rules-area ul {
+        list-style-type: none;
+        padding-left: 0;
+        margin: 0;
+        font-size: 0.8em;
+      }
+      #rules-area li {
+        margin-bottom: 4px;
+        color: #f0c5ff;
+      }
+      #rules-area li:last-child {
+        margin-bottom: 0;
+      }
+      #rules-area li strong {
+        color: #ffeb3b;
       }
 
       #hand-controls {
@@ -393,23 +421,18 @@
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: rgba(
-          10,
-          0,
-          20,
-          0.9
-        ); /* Fundo da mensagem roxo bem escuro translúcido */
-        color: #00bcd4; /* Texto Turquesa */
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-size: 1em;
-        z-index: 110;
+        background-color: rgba(255, 0, 153, 0.9); /* Rosa choque mais opaco */
+        color: #ffffff; /* Texto branco puro para contraste */
+        padding: 12px 25px; /* Mais padding */
+        border-radius: 10px; /* Bordas mais arredondadas */
+        font-size: 1.1em; /* Fonte maior */
+        z-index: 1100; /* Garantir que está bem na frente */
         opacity: 0;
         transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
         pointer-events: none;
-        border: 1px solid #ff0099; /* Borda Rosa */
+        border: 2px solid #ffffff; /* Borda branca */
         font-weight: bold;
-        text-shadow: 0 0 5px rgba(0, 188, 212, 0.7);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra no texto */
       }
       #message-area.visible {
         opacity: 1;
@@ -433,7 +456,9 @@
           <div class="title">Pontuação</div>
           <div class="value-container">
             <span id="total-score" class="value">0</span>
-            <span class="score-target">/60</span>
+            <span class="score-target"
+              >/<span id="score-target-value">60</span></span
+            >
           </div>
         </div>
         <div id="energy-panel" class="info-panel">
@@ -455,6 +480,21 @@
       </div>
 
       <div id="bottom-area">
+        <div id="rules-area">
+          <ul>
+            <li>Valide palavras para ganhar <strong>PONTOS</strong>!</li>
+            <li>
+              Fim de jogo se <strong>ENERGIA</strong> chegar a
+              <strong>0</strong>.
+            </li>
+            <li>Validar palavra: -1 <strong>ENERGIA</strong></li>
+            <li>Trocar letras: -1 <strong>ENERGIA</strong></li>
+            <li>
+              Atingir a meta de <strong>PONTOS</strong>: +3
+              <strong>ENERGIA</strong>!
+            </li>
+          </ul>
+        </div>
         <div id="hand-controls">
           <button
             id="sort-alpha-button"
@@ -748,6 +788,8 @@
         let draggedLetterInfo = null;
         let gameActive = true;
         let messageTimeout;
+        let targetScore = 60;
+        let scoreTargetValueElement;
 
         const boardElement = document.getElementById("board");
         const playerHandElement = document.getElementById("player-hand");
@@ -770,6 +812,7 @@
         const restartButton = document.getElementById("restart-button");
         const menuButton = document.getElementById("menu-button");
         const messageArea = document.getElementById("message-area");
+        scoreTargetValueElement = document.getElementById("score-target-value");
 
         function isVowel(letter) {
           return VOWELS.includes(letter.toUpperCase());
@@ -871,6 +914,9 @@
           currentWordMultisElement.textContent = currentWordMultis;
           totalScoreElement.textContent = totalScore;
           currentEnergyElement.textContent = currentEnergy;
+          if (scoreTargetValueElement)
+            scoreTargetValueElement.textContent = targetScore; // Atualiza aqui também
+
           const isBoardEmpty = boardState.every((s) => s === null);
           playButton.disabled = !gameActive || isBoardEmpty;
           clearWordButton.disabled = !gameActive || isBoardEmpty;
@@ -1053,14 +1099,26 @@
             const scoreFromWord = currentWordPoints * (1 + currentWordMultis);
             totalScore += scoreFromWord;
             currentEnergy -= 1;
+
+            if (totalScore >= targetScore) {
+              currentEnergy += 3;
+              targetScore += 60;
+              // scoreTargetValueElement.textContent = targetScore; // Já é atualizado em renderStats
+              showMessage(
+                `META ATINGIDA! +3 ENERGIA! Próxima meta: ${targetScore} pts`,
+                3500
+              );
+            } else {
+              showMessage(`"${word}" +${scoreFromWord} pts!`, 2000);
+            }
+
             boardState.fill(null);
             refillHand();
-            showMessage(`"${word}" +${scoreFromWord} pts!`, 2000);
             checkGameOver();
           } else {
             showMessage(`"${word}" não é válida!`, 2000);
           }
-          renderBoard();
+          renderBoard(); // Isso chama calculateAndUpdateWordScore que chama renderStats
         }
 
         function handleSwapLetters() {
@@ -1082,9 +1140,9 @@
           shuffleArray(letterBag);
           playerHand = [];
           refillHand();
-          renderStats();
-          showMessage("Letras trocadas!", 1500);
-          checkGameOver();
+          showMessage("Letras trocadas!", 1500); // Movido para depois de refillHand
+          checkGameOver(); // Movido para depois de refillHand e showMessage
+          renderStats(); // Para atualizar o estado da energia imediatamente
         }
 
         function sortHandAlpha() {
@@ -1111,13 +1169,16 @@
           totalScore = 0;
           currentWordPoints = 0;
           currentWordMultis = 0;
+          targetScore = 60;
+          // scoreTargetValueElement.textContent = targetScore; // Será chamado por renderStats
+
           createLetterBag();
           playerHand = [];
           boardState.fill(null);
           refillHand();
           gameOverPopup.classList.add("hidden");
           document.getElementById("swap-cost").textContent = `${SWAP_COST}⚡`;
-          renderBoard();
+          renderBoard(); // Isso chama calculateAndUpdateWordScore que chama renderStats
         }
 
         function handleDragStartHandLetter(event) {
