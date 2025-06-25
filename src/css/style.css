@@ -117,12 +117,27 @@ body {
   margin: 0 5px;
 }
 
+/* --- ESTILO PONTUAÇÃO ALVO --- */
 #score-panel .value-container {
-  position: relative;
+  display: flex;
+  flex-direction: column; /* Empilha os elementos */
+  align-items: center;
+  line-height: 1.1; /* Deixa os textos mais próximos */
 }
+
+#score-panel .value {
+  font-size: 2em; /* Aumenta um pouco o score atual */
+}
+
 #score-panel .score-target {
-  font-size: 0.7em;
-  color: #4a0f5c;
+  font-size: 1.1rem; /* Aumenta a fonte da meta */
+  font-weight: bold;
+  color: #4a0f5c; /* Cor roxa escura para contraste */
+  margin-top: 5px; /* Espaço acima da linha */
+  padding-top: 5px; /* Espaço abaixo da linha */
+  border-top: 2px solid rgba(44, 11, 63, 0.5); /* Linha separadora temática */
+  width: 85%; /* Largura da linha */
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.2); /* Sombra sutil para dar profundidade */
 }
 
 /* --- ÁREA LATERAL ESQUERDA --- */
@@ -454,7 +469,6 @@ body {
   transform: translate(-50%, -10px);
 }
 
-/* ESTILO PARA O NOVO CONTADOR DE PALAVRAS */
 #possible-words-counter {
   margin-top: 15px;
   padding: 5px 10px;
