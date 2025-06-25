@@ -117,28 +117,38 @@ body {
   margin: 0 5px;
 }
 
-/* --- ESTILO PONTUAÇÃO ALVO --- */
+/* --- ESTILO PONTUAÇÃO ALVO (LADO A LADO) --- */
 #score-panel .value-container {
   display: flex;
-  flex-direction: column; /* Empilha os elementos */
-  align-items: center;
-  line-height: 1.1; /* Deixa os textos mais próximos */
+  flex-direction: row; /* Garante o layout em linha */
+  align-items: baseline; /* Alinha pela base do texto, ideal para fontes de tamanhos diferentes */
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+  gap: 4px; /* Pequeno espaço entre a pontuação e a meta */
 }
 
 #score-panel .value {
-  font-size: 2em; /* Aumenta um pouco o score atual */
+  font-size: 1.8em; /* Tamanho da pontuação atual */
 }
 
 #score-panel .score-target {
-  font-size: 1.1rem; /* Aumenta a fonte da meta */
+  font-size: 1.8em; /* Tamanho da barra "/" */
   font-weight: bold;
-  color: #4a0f5c; /* Cor roxa escura para contraste */
-  margin-top: 5px; /* Espaço acima da linha */
-  padding-top: 5px; /* Espaço abaixo da linha */
-  border-top: 2px solid rgba(44, 11, 63, 0.5); /* Linha separadora temática */
-  width: 85%; /* Largura da linha */
-  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.2); /* Sombra sutil para dar profundidade */
+  color: #4a0f5c;
+  /* Remove estilos que eram para o layout vertical */
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  width: auto;
 }
+
+#score-target-value {
+  font-size: 1.2em; /* Tamanho da meta igual ao da pontuação para equilíbrio */
+  font-weight: 900;
+  color: #1e002d;
+  /* Efeito glitch mantido */
+  text-shadow: 1.5px 1.5px 0px #ff0099, -1.5px -1.5px 0px #00bcd4;
+}
+/* --- FIM DO ESTILO PONTUAÇÃO ALVO --- */
 
 /* --- ÁREA LATERAL ESQUERDA --- */
 #left-sidebar {
