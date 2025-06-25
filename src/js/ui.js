@@ -33,6 +33,9 @@ export const finalScoreElement = document.getElementById("final-score");
 export const restartButton = document.getElementById("restart-button");
 export const menuButton = document.getElementById("menu-button");
 export const messageArea = document.getElementById("message-area");
+export const possibleWordsCounterElement = document.getElementById(
+  "possible-words-counter"
+); // Elemento adicionado
 
 let messageTimeout;
 
@@ -79,7 +82,8 @@ export function renderBoard() {
   });
 }
 
-export function renderHand() {
+// Função interna para renderizar as peças
+function renderHand() {
   playerHandElement.innerHTML = "";
   state.playerHand.forEach((tile) => {
     if (!tile) return;
@@ -93,9 +97,22 @@ export function renderHand() {
     valueSpan.classList.add("value");
     valueSpan.textContent = config.LETTER_VALUES[tile.letter];
     tileDiv.appendChild(valueSpan);
-    // Os listeners do drag da mão serão adicionados no main.js, onde a lógica de d&d é gerenciada.
+    // Listeners são adicionados no main.js via MutationObserver
     playerHandElement.appendChild(tileDiv);
   });
+}
+
+// Nova função para atualizar o contador
+export function renderPossibleWordsCount(count) {
+  if (possibleWordsCounterElement) {
+    possibleWordsCounterElement.innerHTML = `Palavras: <span>${count}</span>`;
+  }
+}
+
+// Nova função "master" para atualizar a UI da mão
+export function updateHandUI(wordCount) {
+  renderHand();
+  renderPossibleWordsCount(wordCount);
 }
 
 export function renderStats() {

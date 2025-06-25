@@ -104,7 +104,8 @@ export function refillHand() {
     ) {
       setPlayerHand(attemptHand);
       setLetterBag(tempBag);
-      ui.renderHand(); // A UI da mão é atualizada aqui
+      const finalWordCount = countPossibleDictionaryWords(state.playerHand);
+      ui.updateHandUI(finalWordCount);
       return;
     }
   }
@@ -117,7 +118,8 @@ export function refillHand() {
     currentHand.push(...drawLettersFromBag(neededFinally));
   }
   setPlayerHand(currentHand);
-  ui.renderHand();
+  const finalWordCount = countPossibleDictionaryWords(state.playerHand);
+  ui.updateHandUI(finalWordCount);
 }
 
 export function calculateAndUpdateWordScore() {
@@ -234,7 +236,9 @@ export function sortHandAlpha() {
     a && b ? a.letter.localeCompare(b.letter) : 0
   );
   setPlayerHand(sortedHand);
-  ui.renderHand();
+
+  const wordCount = countPossibleDictionaryWords(state.playerHand);
+  ui.updateHandUI(wordCount);
 }
 
 export function checkGameOver() {
@@ -379,7 +383,8 @@ export function handleDropOnBoardSlot(event) {
   setBoardState(newBoard);
   setPlayerHand(newHand);
   ui.renderBoard();
-  ui.renderHand();
+  const wordCount = countPossibleDictionaryWords(state.playerHand);
+  ui.updateHandUI(wordCount);
   calculateAndUpdateWordScore();
   setDraggedLetterInfo(null);
 }

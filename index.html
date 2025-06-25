@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MultiLetra Mix (MLM)</title>
+    <!-- Link para o novo arquivo de estilo -->
     <link rel="stylesheet" href="./src/css/style.css" />
   </head>
   <body>
@@ -42,6 +43,14 @@
         <button id="swap-letters-button" title="Trocar todas as letras da mão">
           Trocar <span id="swap-cost">1⚡</span>
         </button>
+
+        <!-- NOVO ELEMENTO ADICIONADO AQUI -->
+        <div
+          id="possible-words-counter"
+          title="Palavras que você pode formar com sua mão atual"
+        >
+          Palavras: <span>--</span>
+        </div>
       </div>
 
       <div id="middle-area">
