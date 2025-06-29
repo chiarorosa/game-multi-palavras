@@ -1,7 +1,9 @@
-// gameLogic.js
+// src/js/gameLogic.js
 // Contém a lógica principal do jogo, regras e manipulação do estado.
 
+// Importações atualizadas
 import * as config from "./config.js";
+import { DICTIONARY } from "./dictionary.js";
 import {
   state,
   setLetterBag,
@@ -36,7 +38,8 @@ function countPossibleDictionaryWords(handTilesArray) {
     .map((tile) => (tile ? tile.letter : ""))
     .filter(Boolean);
   let count = 0;
-  for (const word of config.DICTIONARY) {
+  for (const word of DICTIONARY) {
+    // Usa o DICTIONARY importado
     if (
       word.length > 0 &&
       word.length <= handLetters.length &&
@@ -50,10 +53,10 @@ function countPossibleDictionaryWords(handTilesArray) {
 
 function isValidWord(word) {
   if (word.length < 2) return false;
-  return config.DICTIONARY.includes(word.toUpperCase());
+  return DICTIONARY.includes(word.toUpperCase()); // Usa o DICTIONARY importado
 }
 
-// --- Funções que Modificam o Estado do Jogo ---
+// O restante do arquivo permanece exatamente o mesmo...
 
 export function createLetterBag() {
   const newBag = [];
@@ -226,7 +229,7 @@ export function clearWordFromBoard() {
     setBoardState(newBoard);
     setPlayerHand(currentHand);
     ui.renderBoard();
-    calculateAndUpdateWordScore(); // CORREÇÃO: Adicionada a chamada para recalcular o placar.
+    calculateAndUpdateWordScore();
     sortHandAlpha();
   }
 }
@@ -407,7 +410,7 @@ export function handleDropOnPlayerHand(event) {
     setBoardState(newBoard);
     setPlayerHand(newHand);
     ui.renderBoard();
-    calculateAndUpdateWordScore(); // CORREÇÃO: Adicionada a chamada para recalcular o placar.
+    calculateAndUpdateWordScore();
     sortHandAlpha();
   }
   setDraggedLetterInfo(null);
