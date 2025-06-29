@@ -3226,6 +3226,57 @@ const OBJETOS_E_LUGARES = [
   "ZARABATANA",
 ];
 
+const ESPORTES = [
+  "ATLETISMO",
+  "BADMINTON",
+  "BASQUETE",
+  "BEISEBOL",
+  "BOXE",
+  "CICLISMO",
+  "ESGRIMA",
+  "FUTEBOL",
+  "GOLFE",
+  "HANDEBOL",
+  "HIPISMO",
+  "JUDO",
+  "KARATE",
+  "LUTALIVRE",
+  "MARATONA",
+  "NATACAO",
+  "PATINACAO",
+  "RUGBI",
+  "SURFE",
+  "TENIS",
+  "TIRO",
+  "VOLEI",
+];
+
+const TECNOLOGIA = [
+  "ALGORITMO",
+  "ANTIVIRUS",
+  "BACKUP",
+  "BITCOIN",
+  "CACHE",
+  "CHATBOT",
+  "CLOUD",
+  "CODIGO",
+  "CPU",
+  "DRONE",
+  "FIBRA",
+  "FIREWALL",
+  "HARDWARE",
+  "IA",
+  "LOGIN",
+  "PIXEL",
+  "ROBO",
+  "ROTEADOR",
+  "SERVER",
+  "SOFTWARE",
+  "TOKEN",
+  "USB",
+  "WIFI",
+];
+
 // Combina todas as categorias em um único dicionário, removendo duplicatas.
 // O filtro final garante que nenhuma palavra maior que o tabuleiro seja incluída.
 export const DICTIONARY = [
@@ -3237,6 +3288,8 @@ export const DICTIONARY = [
     ...CONCEITOS_E_ADJETIVOS,
     ...VERBOS,
     ...OBJETOS_E_LUGARES,
+    ...ESPORTES,
+    ...TECNOLOGIA,
   ]),
 ].filter((palavra) => palavra.length <= NUM_BOARD_SLOTS);
 
